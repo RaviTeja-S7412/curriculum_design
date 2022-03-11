@@ -5,11 +5,11 @@ import { get_userdata } from "../helpers/Admin";
 
 export const login = (user) => async (dispatch) => {
   dispatch({ type: authConstants.LOGIN_REQUEST });
-  const res = await axios.post(`/admin/signin`, {
+  const res = await axios.post(`/Login/do_login`, {
     ...user,
   });
 
-  if (res.status === 200) {
+  if (res.data.status === 200) {
     // eslint-disable-next-line no-shadow
     const { token, user } = res.data;
     localStorage.setItem("token", token);
@@ -22,10 +22,10 @@ export const login = (user) => async (dispatch) => {
       },
     });
     dispatch(get_userdata());
-  } else if (res.status === 400) {
+  } else {
     dispatch({
       type: authConstants.LOGIN_FAILURE,
-      payload: { error: res.data.error },
+      payload: { error: res.data.msg },
     });
   }
 };
@@ -92,15 +92,15 @@ export const isUserLoggedIn = () => async (dispatch) => {
 
 export const signout = () => async (dispatch) => {
   dispatch({ type: authConstants.LOGOUT_REQUEST });
-  const res = await axios.post(`/admin/signout`);
+  const res = await axios.post(`/Login/signout`);
 
-  if (res.status === 200) {
+  if (res.data.status === 200) {
     localStorage.clear();
     dispatch({ type: authConstants.LOGOUT_SUCCESS });
   } else {
     dispatch({
       type: authConstants.LOGOUT_FAILURE,
-      payload: { error: res.data.error },
+      payload: { error: res.data.msg },
     });
   }
 };

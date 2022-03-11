@@ -1,9 +1,17 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
+require APPPATH . '/libraries/REST_Controller.php';
 
-class Courses extends MY_Controller {
+class Courses extends REST_Controller {
 
-	public function create()
+	public function get_courses_get(){
+		
+		$data = $this->db->get_where("tbl_courses",["deleted"=>0])->result();
+		$this->response(["status"=>200,"all_courses"=>$data], REST_Controller::HTTP_OK);
+		
+	}
+	
+	public function create_post()
 	{
 		
 		$id = $this->input->post("id");	
@@ -13,15 +21,15 @@ class Courses extends MY_Controller {
 		$max_credits = $this->input->post("max_credits");
 		
 		if($course_name == ""){
-			echo json_encode(["status"=>false,"msg"=>"Program Name is Required"]);
+			$this->response(["status"=>400,"msg"=>"Course Name is Required"], REST_Controller::HTTP_OK);
 			exit();
 		}
 		if($min_credits == ""){
-			echo json_encode(["status"=>false,"msg"=>"Minimum Credits is Required"]);
+			$this->response(["status"=>400,"msg"=>"Minimum Credits is Required"], REST_Controller::HTTP_OK);
 			exit();
 		}
 		if($max_credits == ""){
-			echo json_encode(["status"=>false,"msg"=>"Maximum Credits is Required"]);
+			$this->response(["status"=>400,"msg"=>"Maximum Credits is Required"], REST_Controller::HTTP_OK);
 			exit();
 		}
 		
@@ -30,7 +38,7 @@ class Courses extends MY_Controller {
 		}
 		$cChk = $this->db->get_where("tbl_courses",["course_name"=>$course_name])->num_rows();
 		if($cChk > 0){
-			echo json_encode(["status"=>false,"msg"=>"Course Name Already Exists"]);
+			$this->response(["status"=>400,"msg"=>"Course Name Already Exists"], REST_Controller::HTTP_OK);
 			exit();
 		}
 		
@@ -50,14 +58,14 @@ class Courses extends MY_Controller {
 		}
 		
 		if($d){
-			echo json_encode(["status"=>true,"msg"=>"Course Successfully $status"]);
+			$this->response(["status"=>200,"msg"=>"Course Successfully $status"], REST_Controller::HTTP_OK);
 		}else{
-			echo json_encode(["status"=>false,"msg"=>"Error Occured Please Try Again"]);
+			$this->response(["status"=>400,"msg"=>"Error Occured Please Try Again"], REST_Controller::HTTP_OK);
 		}
 		
 	}
 	
-	public function delete()
+	public function delete_post()
 	{
 		
 		$id = $this->input->post("id");
@@ -70,9 +78,9 @@ class Courses extends MY_Controller {
 		$d = $this->db->where("id",$id)->delete("tbl_courses");
 		
 		if($d){
-			echo json_encode(["status"=>true,"msg"=>"Course Successfully Deleted"]);
+			$this->response(["status"=>200,"msg"=>"Course Successfully Deleted"], REST_Controller::HTTP_OK);
 		}else{
-			echo json_encode(["status"=>false,"msg"=>"Error Occured Please Try Again"]);
+			$this->response(["status"=>400,"msg"=>"Error Occured Please Try Again"], REST_Controller::HTTP_OK);
 		}
 		
 	}

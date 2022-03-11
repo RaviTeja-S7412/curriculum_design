@@ -8,18 +8,18 @@ export const get_userdata = () => async (dispatch) => {
   const udata = JSON.parse(localStorage.getItem("user"));
   // dispatch({ type: authConstants.GET_USERDATA });
   // eslint-disable-next-line no-underscore-dangle
-  const res = await axios.post(`/admin/get_userdata`, { user_id: udata._id });
+  const res = await axios.post(`/Login/get_userdata`, { user_id: udata.Sno });
 
-  if (res.status === 200) {
+  if (res.data.status === 200) {
     return dispatch({
       type: authConstants.GET_USERDATA,
       payload: { ...res.data.user },
     });
   }
-  if (res.status === 400) {
+  if (res.data.status === 400) {
     dispatch({
       type: authConstants.LOGIN_FAILURE,
-      payload: { error: res.data.error },
+      payload: { error: res.data.msg },
     });
   }
 };

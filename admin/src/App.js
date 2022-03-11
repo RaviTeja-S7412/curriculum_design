@@ -45,8 +45,8 @@ import { useMaterialUIController, setMiniSidenav } from "context";
 import brandWhite from "assets/images/logo-ct.png";
 import brandDark from "assets/images/logo-ct-dark.png";
 import SignIn from "layouts/authentication/sign-in";
-import { useSelector } from "react-redux";
-// import { get_userdata } from "helpers/Admin";
+import { useSelector, useDispatch } from "react-redux";
+import { isUserLoggedIn } from "actions/auth.actions";
 
 export default function App() {
   const [controller, dispatch] = useMaterialUIController();
@@ -79,12 +79,16 @@ export default function App() {
     }
   };
 
+  const token = window.localStorage.getItem("token");
   const auth = useSelector((state) => state.auth);
-  // const udispatch = useDispatch();
+  // console.log(auth);
+  const udispatch = useDispatch();
 
   useEffect(() => {
-    if (!auth.authenticate) {
+    if (!token) {
       history("/sign-in");
+    } else {
+      udispatch(isUserLoggedIn());
     }
   }, [auth.authenticate]);
 
@@ -99,7 +103,6 @@ export default function App() {
     document.scrollingElement.scrollTop = 0;
   }, [pathname]);
 
-  const token = window.localStorage.getItem("token");
   const getRoutes = (allRoutes) =>
     allRoutes.map((route) => {
       if (route.collapse) {

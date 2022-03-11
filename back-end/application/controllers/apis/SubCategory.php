@@ -1,16 +1,24 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
+require APPPATH . '/libraries/REST_Controller.php';
 
-class SubCategory extends MY_Controller {
+class SubCategory extends REST_Controller {
 
-	public function create()
+	public function get_subcategories_get(){
+		
+		$data = $this->db->get_where("tbl_subject_category",["deleted"=>0])->result();
+		$this->response(["status"=>200,"all_subcategories"=>$data], REST_Controller::HTTP_OK);
+		
+	}
+	
+	public function create_post()
 	{
 		
 		$id = $this->input->post("id");	
 		$category_name = $this->input->post("category_name");
 		
 		if($category_name == ""){
-			echo json_encode(["status"=>false,"msg"=>"Category Name is Required"]);
+			$this->response(["status"=>400,"msg"=>"Subject Category Name is Required"], REST_Controller::HTTP_OK);
 			exit();
 		}
 		
@@ -19,7 +27,7 @@ class SubCategory extends MY_Controller {
 		}
 		$pChk = $this->db->get_where("tbl_subject_category",["category_name"=>$category_name])->num_rows();
 		if($pChk > 0){
-			echo json_encode(["status"=>false,"msg"=>"Category Name Already Exists"]);
+			$this->response(["status"=>400,"msg"=>"Subject Category Name Already Exists"], REST_Controller::HTTP_OK);
 			exit();
 		}
 		
@@ -33,14 +41,14 @@ class SubCategory extends MY_Controller {
 		}
 		
 		if($d){
-			echo json_encode(["status"=>true,"msg"=>"Category Successfully $status"]);
+			$this->response(["status"=>200,"msg"=>"Subject Category Successfully $status"], REST_Controller::HTTP_OK);
 		}else{
-			echo json_encode(["status"=>false,"msg"=>"Error Occured Please Try Again"]);
+			$this->response(["status"=>400,"msg"=>"Error Occured Please Try Again"], REST_Controller::HTTP_OK);
 		}
 		
 	}
 	
-	public function delete()
+	public function delete_post()
 	{
 		
 		$id = $this->input->post("id");
@@ -53,9 +61,9 @@ class SubCategory extends MY_Controller {
 		$d = $this->db->where("id",$id)->delete("tbl_subject_category");
 		
 		if($d){
-			echo json_encode(["status"=>true,"msg"=>"Category Successfully Deleted"]);
+			$this->response(["status"=>200,"msg"=>"Subject Category Successfully Deleted"], REST_Controller::HTTP_OK);
 		}else{
-			echo json_encode(["status"=>false,"msg"=>"Error Occured Please Try Again"]);
+			$this->response(["status"=>400,"msg"=>"Error Occured Please Try Again"], REST_Controller::HTTP_OK);
 		}
 		
 	}

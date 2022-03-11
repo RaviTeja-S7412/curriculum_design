@@ -1,16 +1,24 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
+require APPPATH . '/libraries/REST_Controller.php';
 
-class Subject extends MY_Controller {
+class Subject extends REST_Controller {
 
-	public function create()
+	public function get_subjects_get(){
+		
+		$data = $this->db->get_where("tbl_subjects",["deleted"=>0])->result();
+		$this->response(["status"=>200,"all_subjects"=>$data], REST_Controller::HTTP_OK);
+		
+	}
+	
+	public function create_post()
 	{
 		
 		$id = $this->input->post("id");	
 		$subject_name = $this->input->post("subject_name");
 		
 		if($subject_name == ""){
-			echo json_encode(["status"=>false,"msg"=>"Subject Name is Required"]);
+			$this->response(["status"=>400,"msg"=>"Subject Name is Required"], REST_Controller::HTTP_OK);
 			exit();
 		}
 		
@@ -19,7 +27,7 @@ class Subject extends MY_Controller {
 		}
 		$pChk = $this->db->get_where("tbl_subjects",["subject_name"=>$subject_name])->num_rows();
 		if($pChk > 0){
-			echo json_encode(["status"=>false,"msg"=>"Subject Name Already Exists"]);
+			$this->response(["status"=>400,"msg"=>"Subject Name Already Exists"], REST_Controller::HTTP_OK);
 			exit();
 		}
 		
@@ -33,29 +41,29 @@ class Subject extends MY_Controller {
 		}
 		
 		if($d){
-			echo json_encode(["status"=>true,"msg"=>"Subject Successfully $status"]);
+			$this->response(["status"=>200,"msg"=>"Subject Successfully $status"], REST_Controller::HTTP_OK);
 		}else{
-			echo json_encode(["status"=>false,"msg"=>"Error Occured Please Try Again"]);
+			$this->response(["status"=>400,"msg"=>"Error Occured Please Try Again"], REST_Controller::HTTP_OK);
 		}
 		
 	}
 	
-	public function delete()
+	public function delete_post()
 	{
 		
 		$id = $this->input->post("id");
 		
 		if(!$id){
-			echo json_encode(["status"=>false,"msg"=>"ID is Required"]);
+			$this->response(["status"=>400,"msg"=>"ID is Required"], REST_Controller::HTTP_OK);
 			exit();
 		}
 		
 		$d = $this->db->where("id",$id)->delete("tbl_subjects");
 		
 		if($d){
-			echo json_encode(["status"=>true,"msg"=>"Subject Successfully Deleted"]);
+			$this->response(["status"=>200,"msg"=>"Subject Successfully Deleted"], REST_Controller::HTTP_OK);
 		}else{
-			echo json_encode(["status"=>false,"msg"=>"Error Occured Please Try Again"]);
+			$this->response(["status"=>400,"msg"=>"Error Occured Please Try Again"], REST_Controller::HTTP_OK);
 		}
 		
 	}

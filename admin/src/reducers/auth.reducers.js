@@ -57,6 +57,14 @@ export default (state = initState, action) => {
         loading: false,
       };
       break;
+    case authConstants.LOGIN_FAILURE:
+      // eslint-disable-next-line no-param-reassign
+      state = {
+        ...state,
+        error: action.payload.error,
+        loading: false,
+      };
+      break;
     case authConstants.GET_DEPARTMENTS:
       // eslint-disable-next-line no-param-reassign
       state = {

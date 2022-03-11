@@ -1,16 +1,24 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
+require APPPATH . '/libraries/REST_Controller.php';
 
-class Program extends MY_Controller {
+class Program extends REST_Controller {
 
-	public function create()
+	public function get_programs_get(){
+		
+		$data = $this->db->get_where("tbl_programs",["deleted"=>0])->result();
+		$this->response(["status"=>200,"all_programs"=>$data], REST_Controller::HTTP_OK);
+		
+	}
+	
+	public function create_post()
 	{
 		
 		$id = $this->input->post("id");	
 		$program_name = $this->input->post("program_name");
 		
 		if($program_name == ""){
-			echo json_encode(["status"=>false,"msg"=>"Program Name is Required"]);
+			$this->response(["status"=>400,"msg"=>"Program Name is Required"], REST_Controller::HTTP_OK);
 			exit();
 		}
 		
@@ -19,7 +27,7 @@ class Program extends MY_Controller {
 		}
 		$pChk = $this->db->get_where("tbl_programs",["program_name"=>$program_name])->num_rows();
 		if($pChk > 0){
-			echo json_encode(["status"=>false,"msg"=>"Program Name Already Exists"]);
+			$this->response(["status"=>400,"msg"=>"Program Name Already Exists"], REST_Controller::HTTP_OK);
 			exit();
 		}
 		
@@ -33,29 +41,28 @@ class Program extends MY_Controller {
 		}
 		
 		if($d){
-			echo json_encode(["status"=>true,"msg"=>"Program Successfully $status"]);
+			$this->response(["status"=>200,"msg"=>"Program Successfully $status"], REST_Controller::HTTP_OK);
 		}else{
-			echo json_encode(["status"=>false,"msg"=>"Error Occured Please Try Again"]);
+			$this->response(["status"=>400,"msg"=>"Error Occured Please Try Again"], REST_Controller::HTTP_OK);
 		}
 		
 	}
 	
-	public function delete()
+	public function delete_post()
 	{
 		
 		$id = $this->input->post("id");
 		
 		if(!$id){
-			echo json_encode(["status"=>false,"msg"=>"ID is Required"]);
-			exit();
+			$this->response(["status"=>400,"msg"=>"ID is Required"], REST_Controller::HTTP_OK);
 		}
 		
 		$d = $this->db->where("id",$id)->delete("tbl_programs");
 		
 		if($d){
-			echo json_encode(["status"=>true,"msg"=>"Program Successfully Deleted"]);
+			$this->response(["status"=>200,"msg"=>"Program Successfully Deleted"], REST_Controller::HTTP_OK);
 		}else{
-			echo json_encode(["status"=>false,"msg"=>"Error Occured Please Try Again"]);
+			$this->response(["status"=>400,"msg"=>"Error Occured Please Try Again"], REST_Controller::HTTP_OK);
 		}
 		
 	}

@@ -16,6 +16,8 @@
     "@emotion/cache": "11.4.0",
     "@emotion/react": "11.4.1",
     "@emotion/styled": "11.3.0",
+    "@material-ui/core": "^4.12.3",
+    "@material-ui/icons": "^4.11.2",
     "@mui/icons-material": "5.2.0",
     "@mui/material": "5.2.0",
     "@mui/styled-engine": "5.2.0",
@@ -25,6 +27,7 @@
     "axios": "^0.24.0",
     "chart.js": "3.4.1",
     "chroma-js": "2.1.2",
+    "material-table": "^1.69.3",
     "prop-types": "15.7.2",
     "react": "17.0.2",
     "react-chartjs-2": "3.0.4",
@@ -48,7 +51,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "install:clean": "rm -rf node_modules/ && rm -rf package-lock.json && npm install && npm start"
+    "install:clean": "rm -rf node_modules/ && rm -rf package-lock.json && npm install && npm start",
+    "proxy": "http://localhost:3000"
   },
   "eslintConfig": {
     "extends": [

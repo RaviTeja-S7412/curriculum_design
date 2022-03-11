@@ -37,12 +37,16 @@ Coded by www.creative-tim.com
 
 // Material Dashboard 2 React layouts
 import Dashboard from "layouts/dashboard";
-import Tables from "layouts/tables";
 import Profile from "layouts/profile";
 import SignIn from "layouts/authentication/sign-in";
 
 // @mui icons
 import Icon from "@mui/material/Icon";
+import Displayprograms from "views/admin/programs";
+import Displaycourses from "views/admin/courses";
+import Displaysubcategories from "views/admin/subcategory";
+import Displaysubjects from "views/admin/subjects";
+import Displaysemesters from "views/admin/semesters";
 
 const routes = [
   {
@@ -55,11 +59,43 @@ const routes = [
   },
   {
     type: "collapse",
-    name: "Tables",
-    key: "tables",
-    icon: <Icon fontSize="small">table_view</Icon>,
-    route: "/tables",
-    component: <Tables />,
+    name: "Programs",
+    key: "programs",
+    icon: <Icon fontSize="small">settings</Icon>,
+    route: "/programs",
+    component: <Displayprograms />,
+  },
+  {
+    type: "collapse",
+    name: "Courses",
+    key: "courses",
+    icon: <Icon fontSize="small">settings</Icon>,
+    route: "/courses",
+    component: <Displaycourses />,
+  },
+  {
+    type: "collapse",
+    name: "Sub categories",
+    key: "sub-category",
+    icon: <Icon fontSize="small">settings</Icon>,
+    route: "/sub-category",
+    component: <Displaysubcategories />,
+  },
+  {
+    type: "collapse",
+    name: "Subjects",
+    key: "subjects",
+    icon: <Icon fontSize="small">settings</Icon>,
+    route: "/subjects",
+    component: <Displaysubjects />,
+  },
+  {
+    type: "collapse",
+    name: "Semesters",
+    key: "semesters",
+    icon: <Icon fontSize="small">settings</Icon>,
+    route: "/semesters",
+    component: <Displaysemesters />,
   },
   {
     type: "collapse",

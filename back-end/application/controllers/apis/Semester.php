@@ -1,16 +1,24 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
+require APPPATH . '/libraries/REST_Controller.php';
 
-class Semester extends MY_Controller {
+class Semester extends REST_Controller {
 
-	public function create()
+	public function get_semesters_get(){
+		
+		$data = $this->db->get_where("tbl_semesters",["deleted"=>0])->result();
+		$this->response(["status"=>200,"all_semesters"=>$data], REST_Controller::HTTP_OK);
+		
+	}	
+
+	public function create_post()
 	{
 		
 		$id = $this->input->post("id");	
 		$semester_name = $this->input->post("semester_name");
 		
 		if($semester_name == ""){
-			echo json_encode(["status"=>false,"msg"=>"Semester Name is Required"]);
+			$this->response(["status"=>400,"msg"=>"Semester Name is Required"], REST_Controller::HTTP_OK);
 			exit();
 		}
 		
@@ -19,7 +27,7 @@ class Semester extends MY_Controller {
 		}
 		$pChk = $this->db->get_where("tbl_semesters",["semester_name"=>$semester_name])->num_rows();
 		if($pChk > 0){
-			echo json_encode(["status"=>false,"msg"=>"Semester Name Already Exists"]);
+			$this->response(["status"=>400,"msg"=>"Semester Name Already Exists"], REST_Controller::HTTP_OK);
 			exit();
 		}
 		
@@ -33,14 +41,14 @@ class Semester extends MY_Controller {
 		}
 		
 		if($d){
-			echo json_encode(["status"=>true,"msg"=>"Semester Successfully $status"]);
+			$this->response(["status"=>200,"msg"=>"Semester Successfully $status"], REST_Controller::HTTP_OK);
 		}else{
-			echo json_encode(["status"=>false,"msg"=>"Error Occured Please Try Again"]);
+			$this->response(["status"=>400,"msg"=>"Error Occured Please Try Again"], REST_Controller::HTTP_OK);
 		}
 		
 	}
 	
-	public function delete()
+	public function delete_post()
 	{
 		
 		$id = $this->input->post("id");
@@ -53,9 +61,9 @@ class Semester extends MY_Controller {
 		$d = $this->db->where("id",$id)->delete("tbl_semesters");
 		
 		if($d){
-			echo json_encode(["status"=>true,"msg"=>"Semester Successfully Deleted"]);
+			$this->response(["status"=>200,"msg"=>"Semester Successfully Deleted"], REST_Controller::HTTP_OK);
 		}else{
-			echo json_encode(["status"=>false,"msg"=>"Error Occured Please Try Again"]);
+			$this->response(["status"=>400,"msg"=>"Error Occured Please Try Again"], REST_Controller::HTTP_OK);
 		}
 		
 	}

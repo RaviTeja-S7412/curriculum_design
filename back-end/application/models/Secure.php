@@ -12,85 +12,23 @@ class Secure extends CI_Model{
 
 	}
 	
-	public function encrypt($data){
-		
-			$key="bjvd!@#$%^&*13248*/-/*vjvdf";
-			$hmac_key = "kbdkh2365765243";
+	public function app_password_crypt( $string, $action ) {
+		    $secret_key = '828569b50d33337c3fe5f45650fa7c21';
+		    $secret_iv = 'cd187735dbfa1bf3a395ed52eaf82911';
 
-	
-		$e = $this->encryption->initialize(
-        	array(
-                'cipher' => 'blowfish',
-                'mode' => 'cbc',
-                'key' => $key,
-                'hmac_digest' => 'sha256',
-				'hmac_key' => $hmac_key
-        	)
-		);
-		
-		$s=$this->encryption->encrypt($data);	
-		
-		
-		if($s){
-		
-			return $s;		
-			
-		}else{
-			
-			return false;		
-		
-		}
-	}
-	
-	
-	public function encryptWithKey($data,$key){
-		
-		$this->encryption->initialize(
-        array(
-                'cipher' => 'aes-256',
-                'mode' => 'ctr',
-                'key' => $key
-        )
-		);
-		
-		$s=$this->encryption->encrypt($data);	
-		
-		
-		if($s){
-		
-		return $s;		
-			
-		}else{
-			
-		return false;		
-		
-		}
-	}
-	
-	public function decrypt($data){
-		
-			$key="bjvd!@#$%^&*13248*/-/*vjvdf";
-			$hmac_key = "kbdkh2365765243";
+		    $output = false;
+		    $encrypt_method = "AES-256-CBC";
+		    $key = hash( 'sha256', $secret_key );
+		    $iv = substr( hash( 'sha256', $secret_iv ), 0, 16 );
 
-		$d =$this->encryption->initialize(
-        array(
-                'cipher' => 'blowfish',
-                'mode' => 'cdc',
-                'key' => $key,
-                'hmac_digest' => 'sha256',
-				'hmac_key' => $hmac_key
-        )
-);
-		$s=$this->encryption->decrypt($data);	
-		if($s){
-		
-			return $s;		
-			
-		}else{
-			
-			return false;		
-		
-		}
+		    if( $action == 'e' ) {
+		        $output = base64_encode( openssl_encrypt( $string, $encrypt_method, $key, 0, $iv ) );
+		    }
+		    else if( $action == 'd' ){
+		        $output = openssl_decrypt( base64_decode( $string ), $encrypt_method, $key, 0, $iv );
+		    }
+
+		    return $output;
 	}
 	
 	public function agent(){

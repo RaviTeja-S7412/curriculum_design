@@ -13,6 +13,8 @@ const axiosIntance = axios.create({
   baseURL: api,
   headers: {
     Authorization: token ? `Bearer ${token}` : "",
+    // Crossorigin: true,
+    // "Content-Type": "multipart/form-data",
   },
 });
 
@@ -27,14 +29,29 @@ axiosIntance.interceptors.request.use((req) => {
 axiosIntance.interceptors.response.use(
   (res) => {
     // console.log(res);
-    toast.success(res.data.message, {
-      position: toast.POSITION.TOP_RIGHT,
-      autoClose: 2000,
-    });
+    if (res.data.status === 200) {
+      toast.success(res.data.msg, {
+        position: toast.POSITION.TOP_RIGHT,
+        autoClose: 3000,
+      });
+      // return res;
+    } else {
+      toast.error(res.data.msg, {
+        position: toast.POSITION.TOP_RIGHT,
+        autoClose: 3000,
+      });
+      // console.log(error.response.data.message);
+      const status = res.status ? res.status : 500;
+      if (status && status === 500) {
+        localStorage.clear();
+        store.dispatch({ type: authConstants.LOGOUT_SUCCESS });
+      }
+      // return Promise.reject(error);
+    }
     return res;
   },
   (error) => {
-    toast.error(error.response.data.message, {
+    toast.error(error.response.data.msg, {
       position: toast.POSITION.TOP_RIGHT,
       autoClose: 3000,
     });

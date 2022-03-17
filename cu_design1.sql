@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 11, 2022 at 02:15 PM
+-- Generation Time: Mar 17, 2022 at 02:43 PM
 -- Server version: 10.4.21-MariaDB
 -- PHP Version: 7.4.25
 
@@ -71,7 +71,42 @@ CREATE TABLE `tbl_courses` (
 
 INSERT INTO `tbl_courses` (`id`, `course_name`, `course_short_code`, `min_credits`, `max_credits`, `status`, `deleted`) VALUES
 (2, 'Bachelor of Technology', 'B.Tech', 160, 180, 0, 0),
-(3, 'Masters of Technology', 'M.Tech', 160, 180, 0, 0);
+(3, 'Masters of Technology', 'M.Tech', 160, 180, 0, 0),
+(5, 'fgh', 'fthr', 0, 0, 1, 0),
+(6, 'yjty', 'jtjyu', 12, 123, 1, 0),
+(7, 'rgergytygyityi', 'grer', 23423, 23423, 1, 0),
+(8, 'dfger', 'rger', 213, 123, 1, 0),
+(9, 'gyjty', 'tyu', 0, 0, 1, 0);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tbl_institutes`
+--
+
+CREATE TABLE `tbl_institutes` (
+  `id` int(10) NOT NULL,
+  `institute_name` varchar(255) NOT NULL,
+  `email` text NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `address` text NOT NULL,
+  `contact_person_name` varchar(155) NOT NULL,
+  `contact_person_mobile` bigint(12) NOT NULL,
+  `contact_person_email` text NOT NULL,
+  `is_email_verified` int(11) NOT NULL,
+  `is_mobile_verified` int(11) NOT NULL,
+  `status` int(11) NOT NULL,
+  `deleted` int(11) NOT NULL,
+  `registered_date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `tbl_institutes`
+--
+
+INSERT INTO `tbl_institutes` (`id`, `institute_name`, `email`, `password`, `address`, `contact_person_name`, `contact_person_mobile`, `contact_person_email`, `is_email_verified`, `is_mobile_verified`, `status`, `deleted`, `registered_date`) VALUES
+(1, 'SVS Group of Institutions', 'sakaraviteja.s@gmail.com', 'VGhSSENmaHBzVFUzbVZxN0dhMFBWQT09', 'Hanamkonda', 'Ravi Teja', 7416232629, 'raviteja@utsin.com', 0, 1, 0, 0, '2022-03-17 13:28:09'),
+(2, 'SVS', 'sakaraviteja.s@gmail.com', 'VGhSSENmaHBzVFUzbVZxN0dhMFBWQT09', 'ksdfhgkhjk', 'jhfvgjkerhjk', 7416232629, 'sgfurgfyi@hfgb', 0, 1, 0, 0, '2022-03-17 13:33:30');
 
 -- --------------------------------------------------------
 
@@ -97,6 +132,18 @@ CREATE TABLE `tbl_institutions` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `tbl_mobile_otp`
+--
+
+CREATE TABLE `tbl_mobile_otp` (
+  `id` int(11) NOT NULL,
+  `mobile` varchar(11) NOT NULL,
+  `otp` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `tbl_programs`
 --
 
@@ -112,7 +159,8 @@ CREATE TABLE `tbl_programs` (
 --
 
 INSERT INTO `tbl_programs` (`id`, `program_name`, `status`, `deleted`) VALUES
-(2, 'Post Graduate', 1, 0);
+(2, 'Post Graduate', 1, 0),
+(4, 'Graduate', 1, 0);
 
 -- --------------------------------------------------------
 
@@ -131,8 +179,7 @@ CREATE TABLE `tbl_program_course_links` (
 --
 
 INSERT INTO `tbl_program_course_links` (`id`, `program`, `course`) VALUES
-(2, 2, 3),
-(3, 2, 2);
+(6, 2, 2);
 
 -- --------------------------------------------------------
 
@@ -157,7 +204,8 @@ INSERT INTO `tbl_semesters` (`id`, `semester_name`, `status`, `deleted`) VALUES
 (3, 'III', 1, 0),
 (4, 'IV', 1, 0),
 (7, 'V', 1, 0),
-(8, 'VI', 1, 0);
+(8, 'VI', 1, 0),
+(9, 'htrghjtyuitygjkty', 1, 0);
 
 -- --------------------------------------------------------
 
@@ -176,8 +224,8 @@ CREATE TABLE `tbl_subcat_course_links` (
 --
 
 INSERT INTO `tbl_subcat_course_links` (`id`, `course`, `subject_category`) VALUES
-(1, 2, 2),
-(5, 2, 3);
+(9, 2, 5),
+(10, 2, 6);
 
 -- --------------------------------------------------------
 
@@ -188,6 +236,7 @@ INSERT INTO `tbl_subcat_course_links` (`id`, `course`, `subject_category`) VALUE
 CREATE TABLE `tbl_subjects` (
   `id` int(11) NOT NULL,
   `subject_name` varchar(255) NOT NULL,
+  `ideal_credits` int(11) NOT NULL,
   `status` int(11) NOT NULL DEFAULT 1,
   `deleted` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -196,11 +245,12 @@ CREATE TABLE `tbl_subjects` (
 -- Dumping data for table `tbl_subjects`
 --
 
-INSERT INTO `tbl_subjects` (`id`, `subject_name`, `status`, `deleted`) VALUES
-(2, 'Chemistry', 0, 0),
-(3, 'Maths A', 1, 0),
-(4, 'Maths B', 1, 0),
-(5, 'Physics', 0, 0);
+INSERT INTO `tbl_subjects` (`id`, `subject_name`, `ideal_credits`, `status`, `deleted`) VALUES
+(3, 'Maths A', 120, 1, 0),
+(4, 'Maths B', 0, 1, 0),
+(5, 'Physics', 0, 0, 0),
+(7, 'Telugu', 100, 1, 0),
+(8, 'Hindi', 100, 1, 0);
 
 -- --------------------------------------------------------
 
@@ -221,7 +271,9 @@ CREATE TABLE `tbl_subject_category` (
 
 INSERT INTO `tbl_subject_category` (`id`, `category_name`, `status`, `deleted`) VALUES
 (2, 'Humanities', 1, 0),
-(3, 'Basic Sciences', 1, 0);
+(3, 'Basic Sciences', 1, 0),
+(5, 'Law', 1, 0),
+(6, 'Test', 1, 0);
 
 -- --------------------------------------------------------
 
@@ -240,9 +292,18 @@ CREATE TABLE `tbl_sub_subcat_links` (
 --
 
 INSERT INTO `tbl_sub_subcat_links` (`id`, `subject_category`, `subject`) VALUES
-(7, 3, 2),
-(8, 3, 3),
-(9, 3, 4);
+(30, 5, 5),
+(32, 0, 5),
+(33, 3, 3),
+(35, 2, 3),
+(36, 2, 4),
+(37, 2, 5),
+(38, 3, 4),
+(39, 3, 5),
+(40, 5, 4),
+(43, 6, 3),
+(44, 6, 4),
+(45, 6, 5);
 
 --
 -- Indexes for dumped tables
@@ -262,9 +323,21 @@ ALTER TABLE `tbl_courses`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `tbl_institutes`
+--
+ALTER TABLE `tbl_institutes`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `tbl_institutions`
 --
 ALTER TABLE `tbl_institutions`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `tbl_mobile_otp`
+--
+ALTER TABLE `tbl_mobile_otp`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -323,7 +396,13 @@ ALTER TABLE `tbl_auths`
 -- AUTO_INCREMENT for table `tbl_courses`
 --
 ALTER TABLE `tbl_courses`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+
+--
+-- AUTO_INCREMENT for table `tbl_institutes`
+--
+ALTER TABLE `tbl_institutes`
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `tbl_institutions`
@@ -332,46 +411,52 @@ ALTER TABLE `tbl_institutions`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT for table `tbl_mobile_otp`
+--
+ALTER TABLE `tbl_mobile_otp`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
 -- AUTO_INCREMENT for table `tbl_programs`
 --
 ALTER TABLE `tbl_programs`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `tbl_program_course_links`
 --
 ALTER TABLE `tbl_program_course_links`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `tbl_semesters`
 --
 ALTER TABLE `tbl_semesters`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `tbl_subcat_course_links`
 --
 ALTER TABLE `tbl_subcat_course_links`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `tbl_subjects`
 --
 ALTER TABLE `tbl_subjects`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `tbl_subject_category`
 --
 ALTER TABLE `tbl_subject_category`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `tbl_sub_subcat_links`
 --
 ALTER TABLE `tbl_sub_subcat_links`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

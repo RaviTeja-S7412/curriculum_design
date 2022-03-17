@@ -47,6 +47,9 @@ import Displaycourses from "views/admin/courses";
 import Displaysubcategories from "views/admin/subcategory";
 import Displaysubjects from "views/admin/subjects";
 import Displaysemesters from "views/admin/semesters";
+import Displaysubcategorylinks from "views/admin/sub-sub-category";
+import Displaycourselinks from "views/admin/sub-category-course";
+import Displayprogramlinks from "views/admin/program-course";
 
 const routes = [
   {
@@ -96,6 +99,30 @@ const routes = [
     icon: <Icon fontSize="small">settings</Icon>,
     route: "/semesters",
     component: <Displaysemesters />,
+  },
+  {
+    type: "collapse",
+    name: "Sub To Subject Category",
+    key: "sub-sub-category-links",
+    icon: <Icon fontSize="small">add_link</Icon>,
+    route: "/sub-sub-category-links",
+    component: <Displaysubcategorylinks />,
+  },
+  {
+    type: "collapse",
+    name: "Subject Category To Course",
+    key: "sub-category-course-links",
+    icon: <Icon fontSize="small">add_link</Icon>,
+    route: "/sub-category-course-links",
+    component: <Displaycourselinks />,
+  },
+  {
+    type: "collapse",
+    name: "Program To Course",
+    key: "program-course-links",
+    icon: <Icon fontSize="small">add_link</Icon>,
+    route: "/program-course-links",
+    component: <Displayprogramlinks />,
   },
   {
     type: "collapse",

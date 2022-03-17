@@ -31,6 +31,7 @@ const Displaysubjects = () => {
     all_subjects.forEach((element) => {
       subject_data.push({
         subject_name: element.subject_name,
+        ideal_credits: element.ideal_credits,
         id: element.id,
       });
     });
@@ -47,6 +48,7 @@ const Displaysubjects = () => {
   }, [all_subjects]);
   const [columns, setColumns] = useState([
     { title: "Subject Name", field: "subject_name" },
+    { title: "Ideal Credits", field: "ideal_credits" },
     { field: "hidden", editable: "never" },
   ]);
 
@@ -88,6 +90,7 @@ const Displaysubjects = () => {
                             // setColumns(...columns);
                             const add_data = new FormData();
                             add_data.append("subject_name", newData.subject_name);
+                            add_data.append("ideal_credits", newData.ideal_credits);
 
                             dispatch(add_subject(add_data));
                             resolve();
@@ -101,6 +104,7 @@ const Displaysubjects = () => {
 
                             const update_data = new FormData();
                             update_data.append("subject_name", newData.subject_name);
+                            update_data.append("ideal_credits", newData.ideal_credits);
                             update_data.append("id", newData.id);
                             dispatch(update_subject(update_data));
                             dataUpdate[index] = newData;

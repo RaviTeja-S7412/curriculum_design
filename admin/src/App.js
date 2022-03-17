@@ -47,6 +47,10 @@ import brandDark from "assets/images/logo-ct-dark.png";
 import SignIn from "layouts/authentication/sign-in";
 import { useSelector, useDispatch } from "react-redux";
 import { isUserLoggedIn } from "actions/auth.actions";
+import { get_subjects } from "actions/subjects.actions";
+import { get_programs } from "actions/programs.actions";
+import { get_courses } from "actions/courses.actions";
+import { get_subcategories } from "actions/subCategory.actions";
 
 export default function App() {
   const [controller, dispatch] = useMaterialUIController();
@@ -89,6 +93,10 @@ export default function App() {
       history("/sign-in");
     } else {
       udispatch(isUserLoggedIn());
+      udispatch(get_subjects());
+      udispatch(get_programs());
+      udispatch(get_courses());
+      udispatch(get_subcategories());
     }
   }, [auth.authenticate]);
 

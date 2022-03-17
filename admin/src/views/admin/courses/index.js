@@ -33,7 +33,7 @@ const Displaycourses = () => {
       });
     });
   }
-
+  console.log("in");
   const [data, setData] = useState([]);
   // componentDidMount or componentDidUpdate
   useEffect(() => {

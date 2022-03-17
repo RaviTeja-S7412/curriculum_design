@@ -18,7 +18,7 @@ Coded by www.creative-tim.com
 import { useState, useEffect } from "react";
 
 // react-router components
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 // prop-types is a library for typechecking of props.
 import PropTypes from "prop-types";
@@ -90,7 +90,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
   // const handleConfiguratorOpen = () => setOpenConfigurator(dispatch, !openConfigurator);
   const handleOpenMenu = (event) => setOpenMenu(event.currentTarget);
   const handleCloseMenu = () => setOpenMenu(false);
-  const history = useNavigate();
+  // const history = useNavigate();
 
   const udispatch = useDispatch();
   const auth_data = useSelector((state) => state.auth);
@@ -106,9 +106,9 @@ function DashboardNavbar({ absolute, light, isMini }) {
     udispatch(signout());
   };
 
-  const profile = () => {
+  /* const profile = () => {
     history("/profile");
-  };
+  }; */
 
   // Render the notifications menu
   const renderMenu = () => (
@@ -123,7 +123,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
       onClose={handleCloseMenu}
       sx={{ mt: 2 }}
     >
-      <NotificationItem onClick={profile} icon={<Icon>account_circle</Icon>} title="Profile" />
+      {/* <NotificationItem onClick={profile} icon={<Icon>account_circle</Icon>} title="Profile" /> */}
       <NotificationItem onClick={handleLogout} icon={<Icon>logout_rounded</Icon>} title="Logout" />
     </Menu>
   );

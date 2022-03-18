@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Roboto:300,400&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="assets/fonts/icomoon/style.css" />
+
+    <link rel="stylesheet" href="assets/css/owl.carousel.min.css" />
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css" />
+
+    <!-- Style -->
+    <link rel="stylesheet" href="assets/css/style.css" />
+
+    <!-- Font Awesome -->
+    <link
+      href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css1"
+      rel="stylesheet"
+      id="bootstrap-css"
+    />
+    <link rel="stylesheet" type="text/css" href="assets/css/icon_font.css" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="assets/css/jquery.transfer.css?v=0.0.3"
+    />
+    <title>Curriculum</title>
+    <style>
+      .content {
+        padding: 7rem 0;
+      }
+      .transfer-demo {
+            width: 640px;
+            height: 400px;
+            margin: 0;
+        }
+    </style>
+  </head>
+  <body>
+    <header>
+      <nav
+        class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3"
+      >
+        <div class="container">
+          <a
+            class="navbar-brand"
+            asp-area=""
+            asp-controller="Home"
+            asp-action="Index"
+          >
+            <img src="assets/images/logo.jpg" alt="" style="width: 50%" />
+          </a>
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-toggle="collapse"
+            data-target=".navbar-collapse"
+            aria-controls="navbarSupportedContent"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div
+            class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse"
+          >
+            <ul class="navbar-nav flex-grow-1 justify-content-end">
+              <li class="nav-item">
+                <a href="#" class="nav-link">ABOUT US</a>
+              </li>
+              <li class="nav-item">
+                <a href="#" class="nav-link">CONTACT US</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <div class="content1">
+      <div class="container">
+        <h4>Curriculum Design</h4>
+        <div class="col-lg-12 card-col">
+          <div class="col-lg-4 ml-auto d-flex">
+            <p class="mb-0 text-dark p-1 text-left"><b style="font-weight: 700;">Min Credits:</b> <b>123</b></p>
+            <p class="mb-0 text-dark p-1 ml-auto"><b style="font-weight: 700;">Max Credits:</b> <b>143</b></p>
+          </div>
+            <h5>HTML</h5>
+            <div id="transfer1" class="transfer-demo"></div>
+            <br><br>
+            <h5>CSS</h5>
+            <div id="transfer2" class="transfer-demo"></div>
+            <br>
+          <input type="submit" class="btn btn-primary" value="Submit">
+          <br><br>
+        </div>
+      </div>
+    </div>
+
+    <footer class="border-top footer text-muted text-center">
+      <div class="container">
+        &copy; 2022 - IAE -
+        <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+      </div>
+    </footer>
+  </body>
+  <script src="assets/js/jquery-3.3.1.min.js"></script>
+  <script src="assets/js/popper.min.js"></script>
+  <script src="assets/js/bootstrap.min.js"></script>
+  <script src="assets/js/main.js"></script>
+  <script type="text/javascript" src="assets/js/jquery.transfer.js"></script>
+  <script
+    type="text/javascript"
+    src="assets/js/jquery.transfer.js?v=0.0.6"
+  ></script>
+  <script type="text/javascript">
+    var dataArray1 = [
+      {
+        city: "HTML",
+        value: 132,
+      },
+      {
+        city: "CSS",
+        value: 422,
+      },
+      {
+        city: "Bootstrap",
+        value: 232,
+      },
+      {
+        city: "Angular",
+        value: 765,
+      },
+      {
+        city: "React",
+        value: 876,
+      },
+      {
+        city: "Java",
+        value: 453,
+      },
+      {
+        city: "PHP",
+        value: 125,
+      },
+    ];
+
+    var settings1 = {
+      dataArray: dataArray1,
+      itemName: "city",
+      valueName: "value",
+      callable: function (items) {
+        console.dir(items);
+      },
+    };
+
+    $("#transfer1").transfer(settings1);
+  </script>
+
+<script type="text/javascript">
+  var dataArray1 = [
+    {
+      city: "HTML",
+      value: 132,
+    },
+    {
+      city: "CSS",
+      value: 422,
+    },
+    {
+      city: "Bootstrap",
+      value: 232,
+    },
+    {
+      city: "Angular",
+      value: 765,
+    },
+    {
+      city: "React",
+      value: 876,
+    },
+    {
+      city: "Java",
+      value: 453,
+    },
+    {
+      city: "PHP",
+      value: 125,
+    },
+  ];
+
+  var settings1 = {
+    dataArray: dataArray1,
+    itemName: "city",
+    valueName: "value",
+    callable: function (items) {
+      console.dir(items);
+    },
+  };
+
+  $("#transfer2").transfer(settings1);
+</script>
+</html>

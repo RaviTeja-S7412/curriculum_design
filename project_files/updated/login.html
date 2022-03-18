@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Roboto:300,400&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="assets/fonts/icomoon/style.css" />
+
+    <link rel="stylesheet" href="assets/css/owl.carousel.min.css" />
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css" />
+
+    <!-- Style -->
+    <link rel="stylesheet" href="assets/css/style.css" />
+
+    <!-- Font Awesome -->
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <title>Login </title>
+    <style>
+      .content {
+        padding: 7rem 0;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <nav
+        class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3"
+      >
+        <div class="container">
+          <a
+            class="navbar-brand"
+            asp-area=""
+            asp-controller="Home"
+            asp-action="Index"
+          >
+            <img src="assets/images/logo.jpg" alt="" style="width: 50%" />
+          </a>
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-toggle="collapse"
+            data-target=".navbar-collapse"
+            aria-controls="navbarSupportedContent"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div
+            class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse"
+          >
+            <ul class="navbar-nav flex-grow-1 justify-content-end">
+              <li class="nav-item">
+                <a href="#" class="nav-link">ABOUT US</a>
+              </li>
+              <li class="nav-item">
+                <a href="#" class="nav-link">CONTACT US</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <div class="content">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-6">
+            <img
+              src="assets/images/undraw_remotely_2j6y.svg"
+              alt="Image"
+              class="img-fluid"
+            />
+          </div>
+          <div class="col-md-5 contents offset-1 mt-5">
+            <div class="row justify-content-center">
+              <div class="col-md-12">
+                <div class="mb-4">
+                  <h3>Institution Login</h3>
+                </div>
+                <form action="#" method="post">
+                  <div class="form-group first">
+                    <label for="username">Username</label>
+                    <input type="text" class="form-control" id="username" />
+                  </div>
+                  <div class="form-group last mb-4">
+                    <label for="password">Password</label>
+                    <input type="password" class="form-control" id="password" />
+                  </div>
+
+                  <div class="d-flex mb-5 align-items-center">
+                    <span class="mr-auto"
+                      ><a href="#" class="forgot-pass"
+                        >Create an Account</a
+                      ></span
+                    >
+                    <span class="ml-auto"
+                      ><a href="#" class="forgot-pass">Forgot Password</a></span
+                    >
+                  </div>
+
+                  <input
+                    type="submit"
+                    value="Log In"
+                    class="btn btn-block btn-primary"
+                  />
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer class="border-top footer text-muted text-center">
+        <div class="container">
+            &copy; 2022 - IAE - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        </div>
+    </footer>
+
+    <script src="js/jquery-3.3.1.min.js"></script>
+    <script src="js/popper.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/main.js"></script>
+  </body>
+</html>

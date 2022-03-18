@@ -56,3 +56,9 @@ $route['translate_uri_dashes'] = FALSE;
 $route["institute-login"] = "home/index";
 $route["register"] = "home/register";
 $route["register-success"] = "home/activation";
+$route["dashboard"] = "dashboard/index";
+$route["create-design"] = "dashboard/create";
+$route["create-design/add-subjects"] = "dashboard/addSubjects";
+$route["create-design/add-credits"] = "dashboard/addCredits";
+
+

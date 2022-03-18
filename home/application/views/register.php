@@ -15,6 +15,7 @@
               <div class="col-md-12">
                 <div class="mb-4">
                   <h3>Institution Registration</h3>
+                  <div id="rmsg"></div>
                 </div>
                 <form method="post" id="register">
                   <div class="form-group">
@@ -104,8 +105,15 @@
 		  <div class="modal-body">
 			<form method="post" id="verify_otp">
 			  <p><input type="number" class="form-control" name="otp" id="otp" placeholder="Enter OTP"></p>
-			  <p><button type="submit" class="btn btn-primary">Submit</button>
-			  </p>
+			  <div class="row">
+		  		<div class="col-md-9">
+		  			<div id="countdown"></div>
+		  			<a href="javascript:void(0)" class="btn btn-info pull-left" id="resendOtp" style="display: none;">Resend</a>
+		  		</div>
+		  		<div class="col-md-3">
+			  		<button type="submit" class="btn btn-primary pull-right">Submit</button>
+			  	</div>
+			  </div>
 			</form>
 		  </div>
 	  </div>
@@ -113,6 +121,7 @@
 </div>
 
 <script>
+	
 	
 	$("#verify_otp").submit(function(e){
 		
@@ -141,29 +150,74 @@
 			}
 		})
 		
-	})
+	});
+	
+	function sendOtp(){
+		
+		var mobile = $("#contact_person_mobile").val();
+		
+		if(mobile.length >= 10){
+			
+			var timeleft = 300;
+			var downloadTimer = setInterval(function(){
+			  if(timeleft <= 0){
+				clearInterval(downloadTimer);
+				$('#countdown').hide();
+				$('#resendOtp').show();
+			  }else{
+
+				  var ltime = Math.floor((timeleft/60));
+				  if(timeleft <= 60){
+					  document.getElementById("countdown").innerHTML = timeleft + " seconds remaining";		  
+				  }else{
+
+					  var seconds = '';
+					  if(ltime == 2){
+						  seconds = (timeleft-(60*2));
+					  }else if(ltime == 1){
+						  seconds = (timeleft-(60));
+					  } 
+					  document.getElementById("countdown").innerHTML = ltime + " minute "+seconds+" seconds remaining";
+				  }
+
+			  }
+			  timeleft -= 1;
+			}, 1000);
+			
+			$.ajax({
+				type: "post",
+				url: "<? echo base_url('home/sendOtp') ?>",
+				data: {mobile:mobile},
+				dataType: "json",
+				success: function(data){
+					console.log(data);
+					if(data.status){
+						$('#countdown').show();
+						$("#msg").html('<div class="alert alert-success">OTP Successfully sent to your mobile number.</div>');
+						$("#otpModal").modal("show");
+					}
+				},
+				error:function(data){
+					console.log(data);
+				}
+			});
+			
+		}
+		
+	}
 	
 	$("#contact_person_mobile").change(function(){
 		
-		var mobile = $(this).val();
-		$.ajax({
-			type: "post",
-			url: "<? echo base_url('home/sendOtp') ?>",
-			data: {mobile:mobile},
-			dataType: "json",
-			success: function(data){
-				console.log(data);
-				if(data.status){
-					$("#msg").html('<div class="alert alert-success">OTP Successfully sent to your mobile number.</div>');
-					$("#otpModal").modal("show");
-				}
-			},
-			error:function(data){
-				console.log(data);
-			}
-		})
+		sendOtp();
+			
+	});
+	
+	$("#resendOtp").click(function(){
 		
-	})
+		$('#resendOtp').hide();
+		sendOtp();
+			
+	});
 	
 	$("#register").submit(function(e){
 		
@@ -175,12 +229,20 @@
 			data : fdata,
 			dataType: "json",
 			success : function(data){
+				window.scrollTo({ top: 0, behavior: 'smooth' });
 				if(data.status){
-					window.location.href = "<? echo base_url('register-success') ?>";
+					
+					$("#rmsg").html(data.msg);
+					setTimeout(function(){
+						window.location.href = "<? echo base_url('register-success') ?>";
+					},3000)
+				}else{
+					$("#rmsg").html(data.msg);
 				}
 			},
 			error : function(data){
-				
+				window.scrollTo({ top: 0, behavior: 'smooth' });
+				$("#rmsg").html(data.msg);
 			}
 		})
 		

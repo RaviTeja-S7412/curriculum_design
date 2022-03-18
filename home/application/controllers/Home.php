@@ -3,23 +3,52 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Home extends CI_Controller {
 
-	/**
-	 * Index Page for this controller.
-	 *
-	 * Maps to the following URL
-	 * 		http://example.com/index.php/welcome
-	 *	- or -
-	 * 		http://example.com/index.php/welcome/index
-	 *	- or -
-	 * Since this controller is set as the default controller in
-	 * config/routes.php, it's displayed at http://example.com/
-	 *
-	 * So any other public methods not prefixed with an underscore will
-	 * map to /index.php/welcome/<method_name>
-	 * @see https://codeigniter.com/userguide3/general/urls.html
-	 */
 	public function index(){
+		
+		if($this->session->userdata('institute_id')){
+        	redirect('dashboard');
+        }
+		
 		$this->load->view('login');
+	}
+	
+	public function do_login(){
+		
+		$email = $this->input->post("email");
+		$password = $this->input->post("password");
+		
+		$check_email = $this->db->where('email',$email)->get('tbl_institutes');
+		if($check_email->num_rows() > 0){
+			$row = $check_email->row_array();
+			if($this->secure->app_password_crypt($row["password"],'d') != $password){
+				 echo json_encode(["Status"=>false,"msg"=>'<div class="alert alert-danger">Password is incorrect.</div>']);
+				 exit();
+			}
+			
+			if($row["status"] == 1){
+				$this->session->set_userdata(array("institute_id"=>$row['id'],"email"=>$row['email'],"mobile"=>$row['contact_person_mobile'],"institute_name"=>$row['institute_name'],"logged_in"=>true));
+				$data=["status"=>true,"msg"=>"success"];
+				echo json_encode($data);
+				exit();
+			}else{
+				
+				if($row["is_email_verified"] == 0){
+					echo json_encode(["Status"=>false,"msg"=>'<div class="alert alert-danger">Email ID Not Verified.</div>']);
+					exit();
+				}
+				if($row["is_mobile_verified"] == 0){
+					echo json_encode(["Status"=>false,"msg"=>'<div class="alert alert-danger">Mobile Number Not Verified.</div>']);
+					exit();
+				}
+				
+			}
+			
+			
+		}else{
+			echo json_encode(["Status"=>false,"msg"=>'<div class="alert alert-danger">Please check login credentials.</div>']);
+			exit();
+		}
+		
 	}
 	
 	public function register(){
@@ -34,13 +63,13 @@ class Home extends CI_Controller {
 		$email = $this->input->post("email");
 		
 		if($password != $cpassword){
-			echo json_encode(["status"=>false,"msg"=>"Password & Confirm Password Do Not Matched."]);
+			echo json_encode(["status"=>false,"msg"=>'<div class="alert alert-danger">Password & Confirm Password Not Matched.</div>']);
 			exit();
 		}
 		
-		$eChk = $this->db->get_where("tbl_institutes",["email"=>$email,"status"=>1])->num_rows();
+		$eChk = $this->db->get_where("tbl_institutes",["email"=>$email])->num_rows();
 		if($eChk > 0){
-			echo json_encode(["status"=>false,"msg"=>"Email ID Already registered with another Institution."]);
+			echo json_encode(["status"=>false,"msg"=>'<div class="alert alert-danger">Email ID Already registered with another Institution.</div>']);
 			exit();
 		}
 		
@@ -92,12 +121,12 @@ class Home extends CI_Controller {
 			
 			$this->secure->send_email($data["email"],"Your Account Activation Details",$html);
 			
-			echo json_encode(["status"=>true,"msg"=>"Institution Registered Successfully Please Verify Your Email To Active Your Account."]);
+			echo json_encode(["status"=>true,"msg"=>'<div class="alert alert-success">Institution Registered Successfully Please Verify Your Email To Active Your Account.</div>']);
 			exit();
 				
 		}else{
 			
-			echo json_encode(["status"=>false,"msg"=>"Error Occured Please Try Again."]);
+			echo json_encode(["status"=>false,"msg"=>'<div class="alert alert-danger">Error Occured Please Try Again.</div>']);
 			exit();
 			
 		}
@@ -106,17 +135,35 @@ class Home extends CI_Controller {
 	
 	public function activateInstitute(){
 		
-		$user = $this->input->get("user");
-		$iChk = $this->db->get_where("tbl_institutes",["email"=>$user])->num_rows();
+		$user = $this->secure->app_password_crypt($this->input->get("user"),'d');
+		$iChk = $this->db->get_where("tbl_institutes",["email"=>$user])->result();
 		
-		if($iChk >= 1){
-			
-			$d = $this->db->where("email",$user)->update("tbl_institutes");
-			if($d){
-							
+		if($user){
+		
+			if($iChk >= 1){
+
+				$d = $this->db->where("email",$user)->update("tbl_institutes",["is_email_verified"=>1,"status"=>1]);
+				if($d){
+					$data["data"] = ["status"=>true,"msg"=>"Your Email Has Successfully Verified"];				
+				}else{
+					$data["data"] = ["status"=>false,"msg"=>"Your Activation Link Has Expired"];
+				}
+
+			}else{
+				$data["data"] = ["status"=>false,"msg"=>"Your Activation Link Has Expired"]; 
 			}
+		
+		}else{
+			
+			$data["data"] = ["status"=>false,"msg"=>"Your Activation Link Has Expired"]; 
 			
 		}
+			
+		$this->load->view('activation',$data);
+		
+	}
+	
+	public function resendEmail(){
 		
 	}
 	
@@ -156,7 +203,7 @@ class Home extends CI_Controller {
 		$mchk = $this->db->order_by("id","desc")->get_where("tbl_mobile_otp",array("mobile"=>$mobile,"otp"=>$motp))->num_rows();
 		
 		if($mchk == 1){
-			$this->db->delete("tbl_mobile_otp",array("mobile"=>$mobile,"otp"=>$motp));
+			$this->db->delete("tbl_mobile_otp",array("mobile"=>$mobile));
 			echo json_encode(array("status"=>true,"msg"=>'<div class="alert alert-success">OTP Verified successfully.</div>'));
 		}else{
 			echo json_encode(array("status"=>false,"msg"=>'<div class="alert alert-danger">Mobile OTP is wrong</div>'));
@@ -171,5 +218,4 @@ class Home extends CI_Controller {
 		
 	}
 
-	
 }

@@ -10,7 +10,7 @@
 				<h4>Create</h4>
 			  </div>
 			  </a> </div>
-			<div class="col-lg-4"> <a href="#">
+			<div class="col-lg-4"> <a href="<? echo base_url("view-curriculum-designs") ?>">
 			  <div class="boxs bg-secondary"> <i class="fa fa-eye fa-2x" aria-hidden="true"></i>
 				<h4>View</h4>
 			  </div>

@@ -60,5 +60,7 @@ $route["dashboard"] = "dashboard/index";
 $route["create-design"] = "dashboard/create";
 $route["create-design/add-subjects"] = "dashboard/addSubjects";
 $route["create-design/add-credits"] = "dashboard/addCredits";
+$route["view-curriculum-designs"] = "dashboard/view";
+$route["curriculum-design/view"] = "dashboard/addCredits";
 
 

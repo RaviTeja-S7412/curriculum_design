@@ -9,8 +9,9 @@
     <script src="<? echo base_url() ?>assets/js/bootstrap.min.js"></script>
     <script src="<? echo base_url() ?>assets/js/main.js"></script>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-    <script type="text/javascript" src="<? echo base_url() ?>assets/js/jquery.transfer.js"></script>
-  	<script type="text/javascript" src="<? echo base_url() ?>assets/js/jquery.transfer.js?v=0.0.6"></script>
+  	
+	<link rel="stylesheet" type="text/css" href="<? echo base_url() ?>assets/bootstrap-duallistbox.css">
+	<script src="<? echo base_url() ?>assets/jquery.bootstrap-duallistbox.js"></script>
     
 <script>
 

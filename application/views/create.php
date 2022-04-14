@@ -117,7 +117,7 @@
 					  'success'
 					);
 					setTimeout(function(){
-						window.location.href = "<? echo base_url('create-design/add-subjects') ?><? echo ($bid != "") ? "?bid=$bid" : '' ?>";
+						window.location.href = "<? echo base_url('create-design/add-subjects?bid=') ?>"+data.bid;
 					},3000)
 				}else{
 					swal(

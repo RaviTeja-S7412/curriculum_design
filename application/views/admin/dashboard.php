@@ -1,5 +1,11 @@
 
-<? $this->load->view("admin/back_common/admin_header") ?>   
+<? $this->load->view("admin/back_common/admin_header") ?>
+ 
+<style>
+	.content a{
+		color: #000 !important;
+	}
+</style>       
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -11,7 +17,7 @@
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="#">Home</a></li>
+              <li class="breadcrumb-item"><a href="<? echo base_url('admin/dashboard') ?>">Home</a></li>
               <li class="breadcrumb-item active">Dashboard</li>
             </ol>
           </div><!-- /.col -->
@@ -26,32 +32,32 @@
         <!-- Info boxes -->
         <div class="row">
           <div class="col-12 col-sm-6 col-md-3">
-            <div class="info-box">
-              <span class="info-box-icon bg-info elevation-1"><i class="fas fa-cog"></i></span>
+          	<a href="<? echo base_url('admin/settings/programs') ?>">
+				<div class="info-box">
+				  <span class="info-box-icon bg-info elevation-1"><i class="fa fa-university"></i></span>
 
-              <div class="info-box-content">
-                <span class="info-box-text">CPU Traffic</span>
-                <span class="info-box-number">
-                  10
-                  <small>%</small>
-                </span>
-              </div>
-              <!-- /.info-box-content -->
-            </div>
+				  <div class="info-box-content">
+					<span class="info-box-text">Programs</span>
+					<span class="info-box-number"><? echo $this->admin->getMoney($this->db->get_where("tbl_programs",["deleted"=>0])->num_rows()); ?></span>
+				  </div>
+				  <!-- /.info-box-content -->
+				</div>
+           	</a>
             <!-- /.info-box -->
           </div>
           <!-- /.col -->
           <div class="col-12 col-sm-6 col-md-3">
-            <div class="info-box mb-3">
-              <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-thumbs-up"></i></span>
+          	<a href="<? echo base_url('admin/settings/courses') ?>">
+				<div class="info-box mb-3">
+				  <span class="info-box-icon bg-danger elevation-1"><i class="fa fa-university"></i></span>
 
-              <div class="info-box-content">
-                <span class="info-box-text">Likes</span>
-                <span class="info-box-number">41,410</span>
-              </div>
-              <!-- /.info-box-content -->
-            </div>
-            <!-- /.info-box -->
+				  <div class="info-box-content">
+					<span class="info-box-text">Courses</span>
+					<span class="info-box-number"><? echo $this->admin->getMoney($this->db->get_where("tbl_courses",["deleted"=>0])->num_rows()); ?></span>
+				  </div>
+				  <!-- /.info-box-content -->
+				</div>
+			</a>
           </div>
           <!-- /.col -->
 
@@ -59,28 +65,62 @@
           <div class="clearfix hidden-md-up"></div>
 
           <div class="col-12 col-sm-6 col-md-3">
-            <div class="info-box mb-3">
-              <span class="info-box-icon bg-success elevation-1"><i class="fas fa-shopping-cart"></i></span>
+          	<a href="<? echo base_url('admin/settings/Subcategories') ?>">
+				<div class="info-box mb-3">
+				  <span class="info-box-icon bg-success elevation-1"><i class="fa fa-university"></i></span>
 
-              <div class="info-box-content">
-                <span class="info-box-text">Sales</span>
-                <span class="info-box-number">760</span>
-              </div>
-              <!-- /.info-box-content -->
-            </div>
+				  <div class="info-box-content">
+					<span class="info-box-text">Subject Categories</span>
+					<span class="info-box-number"><? echo $this->admin->getMoney($this->db->get_where("tbl_subject_category",["deleted"=>0])->num_rows()); ?></span>
+				  </div>
+				  <!-- /.info-box-content -->
+				</div>
+			</a>
             <!-- /.info-box -->
           </div>
           <!-- /.col -->
           <div class="col-12 col-sm-6 col-md-3">
-            <div class="info-box mb-3">
-              <span class="info-box-icon bg-warning elevation-1"><i class="fas fa-users"></i></span>
+          	<a href="<? echo base_url('admin/settings/subjects') ?>">
+				<div class="info-box mb-3">
+				  <span class="info-box-icon bg-warning elevation-1"><i class="fa fa-university"></i></span>
 
-              <div class="info-box-content">
-                <span class="info-box-text">New Members</span>
-                <span class="info-box-number">2,000</span>
-              </div>
-              <!-- /.info-box-content -->
-            </div>
+				  <div class="info-box-content">
+					<span class="info-box-text">Subjects</span>
+					<span class="info-box-number"><? echo $this->admin->getMoney($this->db->get_where("tbl_subjects",["deleted"=>0])->num_rows()); ?></span>
+				  </div>
+				  <!-- /.info-box-content -->
+				</div>
+			</a>
+            <!-- /.info-box -->
+          </div>
+          <!-- /.col -->
+          <div class="col-12 col-sm-6 col-md-3">
+          	<a href="<? echo base_url('admin/settings/semesters') ?>">
+				<div class="info-box mb-3">
+				  <span class="info-box-icon bg-success elevation-1"><i class="fa fa-university"></i></span>
+
+				  <div class="info-box-content">
+					<span class="info-box-text">Semesters</span>
+					<span class="info-box-number"><? echo $this->admin->getMoney($this->db->get_where("tbl_semesters",["deleted"=>0])->num_rows()); ?></span>
+				  </div>
+				  <!-- /.info-box-content -->
+				</div>
+           	</a>
+            <!-- /.info-box -->
+          </div>
+          <!-- /.col -->
+          <div class="col-12 col-sm-6 col-md-3">
+          	<a href="<? echo base_url('admin/institutions') ?>">
+				<div class="info-box mb-3">
+				  <span class="info-box-icon bg-info elevation-1"><i class="fa fa-university"></i></span>
+
+				  <div class="info-box-content">
+					<span class="info-box-text">Institutions</span>
+					<span class="info-box-number"><? echo $this->admin->getMoney($this->db->get_where("tbl_institutes",["deleted"=>0])->num_rows()); ?></span>
+				  </div>
+				  <!-- /.info-box-content -->
+				</div>
+			</a>
             <!-- /.info-box -->
           </div>
           <!-- /.col -->

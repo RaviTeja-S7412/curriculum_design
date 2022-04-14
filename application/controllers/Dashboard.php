@@ -27,10 +27,6 @@ class Dashboard extends CI_Controller {
 			$data["sub_categories"] = json_decode($data["branch_data"]->subject_categories);	
 		}
 		
-//		echo '<pre>';
-//		print_r($data);
-//		exit();
-		
 		$data["programs"] = $this->db->get_where("tbl_programs",["status"=>1,"deleted"=>0])->result();
 		$this->load->view('create',$data);
 		
@@ -284,7 +280,7 @@ class Dashboard extends CI_Controller {
 		$inst_id = $this->session->userdata("institute_id");
 		$branch_data = json_decode($this->session->userdata("branch_data"));
 		
-		$bid = $branch_data->bid;
+		$bid = $this->input->post("bid");
 		
 		$subjects = [];
 		$selectives = [];
@@ -318,7 +314,7 @@ class Dashboard extends CI_Controller {
 			if($bid){
 				echo json_encode(["status"=>true,"msg"=>"Updated Successfully.","bid"=>$bid]);
 			}else{
-				echo json_encode(["status"=>true,"msg"=>"Subjects Added Successfully Please Add Credits to Subjects.","bid"=>$lid]);
+				echo json_encode(["status"=>true,"msg"=>"Subjects Added Successfully Please Add Credits to Subjects.","bid"=>$bid]);
 			}
 			exit();
 		}else{
@@ -388,12 +384,13 @@ class Dashboard extends CI_Controller {
 					$pd = $this->db->where("branch_id",$bid)->update("tbl_institute_curriculum_design",$pdata);
 				}else{
 					$pd = $this->db->insert("tbl_institute_curriculum_design",$pdata);
+					$lid = $this->db->insert_id();
 				}
 			
 				if($bid){
-					echo json_encode(["status"=>true,"msg"=>"Updated Successfully."]);
+					echo json_encode(["status"=>true,"msg"=>"Updated Successfully.","bid"=>$bid]);
 				}else{
-					echo json_encode(["status"=>true,"msg"=>"Branch Created Successfully Please Add Subjects."]);
+					echo json_encode(["status"=>true,"msg"=>"Branch Created Successfully Please Add Subjects.","bid"=>$lid]);
 				}
 			
 			}else{

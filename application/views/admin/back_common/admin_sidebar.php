@@ -1,11 +1,14 @@
- <? $uri = $this->uri->segment(2) ?> 
- <? $suri = $this->uri->segment(3) ?> 
+<? $uri = $this->uri->segment(2); ?> 
+<? 
+	$suri = $this->uri->segment(3); 
+	$adata = $this->db->get_where( "tbl_auths", array( "UserId" => $this->session->userdata( "adminid" ) ) )->row();
+?> 
    
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
     <a href="<? echo base_url('admin/dashboard') ?>" class="brand-link">
 <!--      <img src="<? echo base_url('assets/') ?>dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">-->
-      <span class="brand-text font-weight-light text-center">CURRICULUM DESIGN</span>
+      <span class="brand-text font-weight-light text-center"><? echo $adata->Name ?></span>
     </a>
 
     <!-- Sidebar -->
@@ -13,7 +16,12 @@
       <!-- Sidebar user panel (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
-          <img src="<? echo base_url('assets/') ?>dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
+          <img src="<? 
+						if ( file_exists( $adata->profile_image ) ) { 
+							echo base_url().$adata->profile_image; 
+						}else{ 
+							echo base_url('assets/images/1.jpg'); 
+						} ?>" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
           <a href="<? echo base_url('admin/dashboard') ?>" class="d-block">Super Admin</a>

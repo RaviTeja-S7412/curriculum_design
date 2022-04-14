@@ -37,9 +37,9 @@
         <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
 <!--          <span class="dropdown-item dropdown-header">15 Notifications</span>-->
 <!--          <div class="dropdown-divider"></div>-->
-          <a href="#" class="dropdown-item">Profile</a>
+          <a href="<? echo base_url('admin/dashboard/profile') ?>" class="dropdown-item">Profile</a>
           <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item">Logout</a>
+          <a href="<? echo base_url('admin/dashboard/logout') ?>" class="dropdown-item">Logout</a>
 <!--
           <div class="dropdown-divider"></div>
           <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>

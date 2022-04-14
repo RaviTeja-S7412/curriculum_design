@@ -90,6 +90,7 @@
 <!--					<input type="hidden" name="subjects-<? //echo $sc->id ?>" id="sub_cat_subjects-<? //echo $sc ?>">-->
 
 				<? } ?>	
+					<input type="hidden" name="bid" value="<? echo $this->input->get("bid") ?>">
 					<input type="submit" class="btn btn-primary" value="Submit">
 				<? } ?>		
 			  <br><br>
@@ -232,7 +233,7 @@
 					  'success'
 					);
 					setTimeout(function(){
-						window.location.href = "<? echo base_url('create-design/add-credits?bid=') ?>"+data.bid;
+						window.location.href = "<? echo base_url('create-design/add-credits?bid=') ?><? echo $this->input->get("bid") ?>";
 					},3000)
 				}else{
 					swal(

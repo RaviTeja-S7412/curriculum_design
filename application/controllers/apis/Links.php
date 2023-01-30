@@ -159,5 +159,57 @@ class Links extends REST_Controller {
 		}
 		
 	}
+
+	
+	public function course_branch_link_post(){
+		
+		$course = $this->input->post("course");
+		$branches = $this->input->post("branch");
+		$ref = $this->input->post("ref");
+		
+		if($course == ""){
+			echo json_encode(["status"=>false,"msg"=>"Please Select Course."]);
+			exit();
+		}
+		
+		if($ref == "delete"){
+			$delete = $this->db->delete("tbl_course_branch_links",["course"=>$course]);
+			if($delete){
+				$this->response(["status"=>200,"msg"=>"Branch Link Deleted Successfully."], REST_Controller::HTTP_OK);
+			}else{
+				$this->response(["status"=>400,"msg"=>"Error Occured Try Again."], REST_Controller::HTTP_OK);
+			}
+		}
+		
+		if($ref == "add"){
+			$cChk = $this->db->get_where("tbl_course_branch_links",["course"=>$course])->num_rows();
+			if($cChk > 0){
+				$this->response(["status"=>400,"msg"=>"Course already added please update branches."], REST_Controller::HTTP_OK);
+			}
+		}else{
+			$this->db->where_not_in("branch",$branches)->delete("tbl_course_branch_links",["course"=>$course]);
+		}
+		
+		
+		if(count($branches) > 0){
+			
+			foreach($branches as $branch){
+				
+				$eChk = $this->db->get_where("tbl_course_branch_links",["course"=>$course,"branch"=>$branch])->num_rows();
+				
+				if($eChk == 0){
+					$this->db->insert("tbl_course_branch_links",["branch"=>$branch,"course"=>$course]);
+				}
+					
+			}
+			$this->response(["status"=>200,"msg"=>"Successfully Updated."], REST_Controller::HTTP_OK);
+			exit();
+			
+		}else{
+			$this->response(["status"=>400,"msg"=>"Please Select branches."], REST_Controller::HTTP_OK);
+			exit();
+		}
+		
+	}
 	
 }

@@ -61,9 +61,9 @@ class Links extends CI_Controller {
 	
 	public function courseLinks(){
 		
-		$this->db->select("sc.course_name,ssl.course");
+		$this->db->select("sc.branch_name,ssl.course");
 		$this->db->from("tbl_subcat_course_links ssl");
-		$this->db->join("tbl_courses sc","ssl.course = sc.id");
+		$this->db->join("tbl_branches sc","ssl.course = sc.id");
 		$data = $this->db->group_by("course")->get()->result();
 		
 		$courselinks = [];
@@ -79,7 +79,7 @@ class Links extends CI_Controller {
 				$dsubCategories[] = $sub->category_name;
 			}
 			
-			$courselinks[] = ["id"=>$d->course,"course_name"=>$d->course_name,"subject_categories"=>implode(", ",$dsubCategories)];
+			$courselinks[] = ["id"=>$d->course,"branch_name"=>$d->branch_name,"subject_categories"=>implode(", ",$dsubCategories)];
 		}
 		$sdata["courselinks"] = array_reverse($courselinks);
 		$this->load->view("admin/links/courselinks",$sdata);
@@ -97,6 +97,47 @@ class Links extends CI_Controller {
 		
 		$sdata["sel_course"] = $course;
 		$this->load->view("admin/links/cuprogramlinks",$sdata);
+		
+	}
+
+	public function branchLinks(){
+		
+		$this->db->select("sc.course_name,ssl.course");
+		$this->db->from("tbl_course_branch_links ssl");
+		$this->db->join("tbl_courses sc","ssl.course = sc.id");
+		$data = $this->db->group_by("course")->get()->result();
+		
+		$courselinks = [];
+		foreach($data as $d){
+			$this->db->select("s.id,s.branch_name");
+			$this->db->from("tbl_course_branch_links ssl");
+			$this->db->join("tbl_branches s","ssl.branch = s.id");
+			$this->db->where("ssl.course",$d->course);
+			$allsubCategories = $this->db->get()->result();
+			
+			$dsubCategories = [];
+			foreach($allsubCategories as $sub){
+				$dsubCategories[] = $sub->branch_name;
+			}
+			
+			$courselinks[] = ["id"=>$d->course,"course_name"=>$d->course_name,"branches"=>implode(", ",$dsubCategories)];
+		}
+		$sdata["courselinks"] = array_reverse($courselinks);
+		$this->load->view("admin/links/branchlinks",$sdata);
+		
+	}
+
+	public function cubranchLink($id=""){
+		
+		$data = $this->db->get_where("tbl_course_branch_links",["course"=>$id])->result();
+		
+		$course = [];
+		foreach($data as $d){
+			$course[] = $d->branch;
+		}
+		
+		$sdata["sel_course"] = $course;
+		$this->load->view("admin/links/cubranchlinks",$sdata);
 		
 	}
 	

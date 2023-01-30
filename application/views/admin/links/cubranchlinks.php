@@ -11,12 +11,12 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0">Subject Category To Course Link</h1>
+            <h1 class="m-0">Course To Branch Link</h1>
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="<? echo base_url("admin/dashboard") ?>">Home</a></li>
-              <li class="breadcrumb-item"><a href="<? echo base_url("admin/links/courseLinks") ?>">Subject Category To Course Links</a></li>
+              <li class="breadcrumb-item"><a href="<? echo base_url("admin/links/branchLinks") ?>">Course To Branch Links</a></li>
               <li class="breadcrumb-item active"><? echo ($id != "") ? 'Update' : 'Create'; ?></li>
             </ol>
           </div><!-- /.col -->
@@ -33,7 +33,7 @@
         	<div class="col-md-12">
 				<div class="card card-primary card-outline">
 					<div class="card-header">
-						<h3 class="card-title"><? echo ($id != "") ? 'Update' : 'Create'; ?> Subject Category To Course Link</h3>
+						<h3 class="card-title"><? echo ($id != "") ? 'Update' : 'Create'; ?> Course To Branch Link</h3>
 					</div>
 					<div class="card-body">
 						<form method="post" id="slcategory">
@@ -41,18 +41,18 @@
 							
 								<div class="col-md-12">
 									<div class="form-group">
-									  <label>Subject Categories</label>
-									  <select class="duallistbox" multiple="multiple" name="subject_category[]" style="height: 200px !important;">
+									  <label>Branches</label>
+									  <select class="duallistbox" multiple="multiple" name="branch[]" style="height: 200px !important;">
 										<? 
-										  	$subjects = $this->db->order_by("id","desc")->get_where("tbl_subject_category",["deleted"=>0])->result(); 
+										  	$subjects = $this->db->order_by("id","desc")->get_where("tbl_branches",["deleted"=>0])->result(); 
 										  	foreach($subjects as $subject){
 												
 												$sel = '';
-												if(in_array($subject->id,$sel_subjectcategories)){
+												if(in_array($subject->id,$sel_course)){
 													$sel = 'selected';
 												}
 												
-												echo '<option value="'.$subject->id.'" '.$sel.'>'.$subject->category_name.'</option>';
+												echo '<option value="'.$subject->id.'" '.$sel.'>'.$subject->branch_name.'</option>';
 											}
 										 ?>
 									  </select>
@@ -61,14 +61,14 @@
 								
 								<div class="col-md-6">
 									<div class="form-group">
-									  <label>Branch</label>
+									  <label>Course</label>
 									  <select class="form-control select2bs4" name="course" required style="width: 100%;">
-										<option value="">Select Branch</option>
+										<option value="">Select Course</option>
 										<? 
-										  	$scats = $this->db->order_by("id","desc")->get_where("tbl_branches",["deleted"=>0])->result(); 
+										  	$scats = $this->db->order_by("id","desc")->get_where("tbl_courses",["deleted"=>0])->result(); 
 										  	foreach($scats as $scat){
 												$sel = ($id == $scat->id) ? 'selected' : '';
-												echo '<option value="'.$scat->id.'" '.$sel.'>'.$scat->branch_name.'</option>';
+												echo '<option value="'.$scat->id.'" '.$sel.'>'.$scat->course_name.'</option>';
 											}
 										 ?>
 									  </select>
@@ -118,7 +118,7 @@
 			type : "post",
 			data : fdata,
 			dataType: "json",
-			url : "<? echo base_url('apis/Links/subcategory_course_link') ?>",
+			url : "<? echo base_url('apis/Links/course_branch_link') ?>",
 			success : function(data){
 //				console.log(data);
 				if(data.status == 200){

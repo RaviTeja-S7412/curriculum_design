@@ -13,14 +13,6 @@
   <link rel="stylesheet" href="<? echo base_url('assets/') ?>plugins/icheck-bootstrap/icheck-bootstrap.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="<? echo base_url('assets/') ?>dist/css/adminlte.min.css">
-  
- <style>
-	
-	.swal-title {
-		font-size: 18px !important;
-	}
-	
-</style> 
 </head>
 <body class="hold-transition login-page">
 <div class="login-box">
@@ -103,12 +95,6 @@
 				
 				if(data.status == 200){
 					window.location.href = "<? echo base_url('admin/dashboard') ?>"
-				}else{
-					swal(
-					  data.msg,
-					  '',
-					  'error'
-					);
 				}
 				console.log(data);
 			},

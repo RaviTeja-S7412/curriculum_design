@@ -9,6 +9,10 @@
 		text-align: right;
 	}
 
+	.bootstrap-duallistbox-container select{
+		height: 180px !important;
+	}
+
 </style>
 
 <div class="content1">
@@ -32,23 +36,33 @@
 							<option value="">Course</option>
 						</select>
 					</div>
+					<div class="col-lg-9 cnote" style="margin-top: 20px; display: none">
+						<p style="font-size: 12px; color: red; font-weight: 500">Note: Typical credits are: Minimum – <span id="cmin"></span>, Maximum – <span id="cmax"></span><br>
+						<!-- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Institution credits are: Minimum – <span id="cmin"></span>, Maximum – <span id="cmax"></span> -->
+						</p></div>
+					<div class="col-lg-3 cnote" style="margin-top: 20px; display: none"><a class="btn btn-primary btn-sm pull-right" href="#" data-toggle="modal" data-target="#creditsModal">Define Your Own Credits</a></div>
 					<div class="col-lg-12">
-						<br/>
+						<br>
 						<div class="form-group">
-							<label for="usr">Course / Branch name:</label>
-							<input type="text" class="form-control" name="branch_name" value="<? echo $branch_data->branch_name ?>" id="branch_name"/>
-						</div>
+							<select class="custom-select" name="branch_name" id="branches" required>
+								<option value="">Branch</option>
+							</select>
+						</div>	
 					</div>
+					
 					<div class="col-lg-12">
 						<div class="form-group" id="sub_categories" style="display: none;">
-							<label for="usr">Subject Categories </label>
+							<label for="usr">Course Categories </label>
 <!--							<input type="hidden" name="sub_categories" id="sub_categories">-->
 <!--							<div id="sub_cats" class="transfer-demo"></div>-->
 							<select multiple="multiple" name="sub_categories[]" id="sub_cats" title="duallistbox_demo1[]">
 							</select>
 					
 						</div>
-						<input type="button" class="btn btn-primary" id="gotoWeightage" value="Submit">
+					</div>
+					<div class="col-md-12">
+						<input type="button" class="btn btn-info pull-left new_course_category" data-toggle="modal" data-target="#myModal" value="Add New Course Catergories" style="display:none">
+						<input type="button" class="btn btn-primary pull-right" id="gotoWeightage" value="Submit">
 					</div>
 					
 				</div>
@@ -62,8 +76,14 @@
 					<div class="col-lg-12" align="right">
 						
 					</div>
-					<div class="col-lg-12 subcategories_weightages">
+					<div class="col-md-12">
+						<p style="margin-left: 48px;color: red;font-size: 14px;font-weight: 500;">Note: Minor variation is allowed as per the need of the respective discipline.</p>	
+					</div>
+					<div class="col-lg-8 subcategories_weightages">
 						
+					</div>
+					<div class="col-lg-4">
+						<div id="piechart" style="width: 200px; height: 200px;"></div>
 					</div>
 					<div class="col-lg-12" align="center">
 						<input type="hidden" name="bid" value="<? echo $bid ?>">
@@ -76,23 +96,188 @@
 </div>
 <input type="hidden" class="weightagelabel">
 
-<? $this->load->view( "front_common/footer" ) ?>
+<div id="creditsModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
 
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header" style="display:block">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Update Credits</h4>
+      </div>
+      <div class="modal-body">
+		<form method="post" id="updateCredits">
+			<div class="form-group">
+				<input type="number" class="form-control" name="min_credits" id="min_credits" placeholder="Minimum Credits" required>
+			</div>
+			<div class="form-group">
+				<input type="number" class="form-control" name="max_credits" id="max_credits" placeholder="Maximum Credits" required>
+			</div>
+			<div class="form-group">
+				<input type="submit" class="btn btn-primary pull-left" value="Submit">
+			</div>
+		</form>	
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div id="branchModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header" style="display:block">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Add New Branch</h4>
+      </div>
+      <div class="modal-body">
+		<form method="post" id="addnew_branch">
+			<div class="form-group">
+				<input type="text" class="form-control" name="new_branch" id="new_branch_name" placeholder="Add New Branch" required>
+			</div>
+			<div class="form-group">
+				<input type="submit" class="btn btn-primary pull-left" value="Submit">
+			</div>
+		</form>	
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header" style="display:block">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Add New Course Catergories</h4>
+      </div>
+      <div class="modal-body">
+		<form method="post" id="addnew_course_category">
+			<div class="form-group">
+				<input type="text" class="form-control" name="new_course_category" id="new_course_category" placeholder="Add New Course Category" required>
+			</div>
+			<div class="form-group">
+				<input type="submit" class="btn btn-primary pull-left" value="Submit">
+			</div>
+		</form>	
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<? $this->load->view( "front_common/footer" ) ?>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+	
+</script>
 
 <script type="text/javascript">
+
+	$("#updateCredits").submit(function(e){
+		
+		e.preventDefault();
+		var course_id = $("#courses").val();
+		var min_credits = $("#min_credits").val();
+		var max_credits = $("#max_credits").val();
+
+		$.ajax({
+			type: "post",
+			data: {course_id: course_id, min_credits: min_credits, max_credits: max_credits},
+			url: "<? echo base_url('ajax/updateinstCredits') ?>",
+			success: function(data){
+				swal(
+					'',
+					'Credits Updated Successfully',
+					'success'
+				);
+				setTimeout(() => {
+					location.reload();
+				}, 2000);
+			},
+			error: function(data){
+
+			}
+		})
+
+	})
+
+	$("#addnew_branch").submit(function(e){
+		
+		e.preventDefault();
+		var course = $("#courses").val();
+		var branch = $("#new_branch_name").val();
+
+		$.ajax({
+			type: "post",
+			data: {course: course, branch: branch},
+			dataType: "json",
+			url: "<? echo base_url('ajax/addNewbranch') ?>",
+			success: function(data){
+				$("#branchModal").modal('hide');
+				if(data.status == "success"){
+					getBranches(data.branch_id)
+				}
+			},
+			error: function(data){
+
+			}
+		})
+
+	})
+
+	$("#addnew_course_category").submit(function(e){
+		
+		e.preventDefault();
+		var branch = $("#branches").val();
+		var course = $("#courses").val();
+		var course_category = $("#new_course_category").val();
+
+		$.ajax({
+			type: "post",
+			data: {course_category: course_category, branch: branch},
+			dataType: "json",
+			url: "<? echo base_url('ajax/addNewcoursecategory') ?>",
+			success: function(data){
+				$("#myModal").modal('hide');
+				if(data.status == "success"){
+					getSubcategories(branch, course)
+				}
+			},
+			error: function(data){
+
+			}
+		})
+
+	})
+
+	$(document).ready(function(){
+		$('#sub_cats').bootstrapDualListbox();
+	})
 	
 	<? if($this->input->get("bid")){ ?>
 		
 		$(document).ready(function(){
 			
+			<? if($branch_data->branch_name){ ?>
+	
+				var id = <? echo ($branch_data->branch_name != "") ? $branch_data->branch_name : 0 ?>;
+
+			<? } ?>
 			<? if($branch_data->course){ ?>
 	
-				var id = <? echo ($branch_data->course != "") ? $branch_data->course : 0 ?>;
+				var cid = <? echo ($branch_data->course != "") ? $branch_data->course : 0 ?>;
 
 			<? } ?>
 			getCourses();
-			getSubcategories(id);
+			getSubcategories(id, cid);
 			gotoWeightage();
+			getBranches();
 			$("#create_fields").show();
 			$("#selectWeightage").hide();
 			
@@ -129,7 +314,7 @@
 				}
 			},
 			error : function(data){
-				console.log(data);
+				// console.log(data);
 				swal(
 				  data.msg,
 				  '',
@@ -161,23 +346,49 @@
 		})
 		
 	}
+
+	function getBranches(branch_id=""){
+		
+		var id = 0;
+		<? if($branch_data->course != ""){ ?>
+			id = <? echo ($branch_data->course != "") ? $branch_data->course : 0 ?>
+		<? }else{ ?>	
+			id = $("#courses").val();
+		<? } ?>	
+
+		var bid = "";
+		if(branch_id){
+			bid = branch_id;
+		}else{
+			bid = <? echo ($branch_data->branch_name != "") ? $branch_data->branch_name : 0 ?>;
+		}
+
+		$.ajax({
+			type: "post",
+			data: {id:id,cid:bid},
+			url: "<? echo base_url('ajax/getBranches') ?>",
+			success: function(data){
+				$("#branches").html(data);
+			}
+		})
+		
+	}
 			   
-	function getSubcategories(id=""){
+	function getSubcategories(id="",cid=""){
 	
 		$('#sub_cats').html("");
 		$("#sub_categories").show();	
 			
 		$.ajax({
 			type: "post",
-			data: {id:id,sub_ids:<? echo ($branch_data->subject_categories != "") ? $branch_data->subject_categories : "[]"; ?>},
+			data: {cid:cid,id:id,sub_ids:<? echo ($branch_data->subject_categories != "") ? $branch_data->subject_categories : "[]"; ?>},
 			dataType: "json",
 			url: "<? echo base_url('ajax/getsubCategories') ?>",
 			success: function(data){
 				
-//				console.log(data);
 				$('#sub_cats').html(data.subcategories);
 				$('.courseCredits').html(data.credits);
-				$('#sub_cats').bootstrapDualListbox();
+				$('#sub_cats').bootstrapDualListbox('refresh', true);
 				
 			},
 			error: function(data){
@@ -190,18 +401,47 @@
 	$("#program").change(function(){
 		
 		getCourses();
+		$('#sub_cats').bootstrapDualListbox('refresh', true);
+		
+	})
+
+	$("#courses").change(function(){
+		
+		getBranches();
+		var min = $('option:selected', this).attr('cmin');
+		var max = $('option:selected', this).attr('cmax');
+
+		if($(this).val() == ""){
+			$(".cnote").hide();
+			$("#cmin").html("");
+			$("#cmax").html("");
+		}else{
+			$(".cnote").show();
+			$("#cmin").html(min);
+			$("#cmax").html(max);
+		}
+		
+		$('#sub_cats').bootstrapDualListbox('refresh', true);
 		
 	})
 	
-	$("#courses").change(function(){
+	$("#branches").change(function(){
 		
-		var id = $("#courses").val();
+		var id = $("#branches").val();
+		var cid = $("#courses").val();
 		var coname = $('option:selected', this).attr('coname');
 		$(".weightagelabel").val(coname);
+		getSubcategories(id, cid);
+		$(".new_course_category").show();
+
+		if(id == "new"){
+			$("#new_branch_name").val("");
+			$("#branchModal").modal('show');
+		}else{
+			$("#branchModal").modal('hide');
+		}
 		
-		getSubcategories(id);
-		
-	})
+	}) 
 	
 	$("#gotoWeightage").click(function(){
 		
@@ -213,7 +453,7 @@
 		
 		var program = $("#program").val();
 		var courses = $("#courses").val();
-		var branch_name = $("#branch_name").val();
+		var branch_name = $("#branches").val();
 		
 		if(program == ""){
 			swal(
@@ -236,15 +476,16 @@
 			}
 		
 		<? } ?>
-		
-		if(branch_name == ""){
-			swal(
-			  'Branch Name Is Required',
-			  '',
-			  'error'
-			);
-			return false;
-		}
+		<? if($branch_data->branch_name == ""){ ?>
+			if(branch_name == ""){
+				swal(
+				'Branch Name Is Required',
+				'',
+				'error'
+				);
+				return false;
+			}
+		<? } ?>	
 		
 		var sub_categories = [];
 		
@@ -267,13 +508,13 @@
 			option;
 		
 		var sub_cats = [];
-		  var tax = document.getElementById('sub_cats');
-		  var len = tax.options.length;
+		var tax = document.getElementById('sub_cats');
+		var len = tax.options.length;
 
-		  for (var i = 0; i < len; i++) {
+		for (var i = 0; i < len; i++) {
 			option = tax.options[i];
 			if (option.selected) {
-				 options.push(option);
+					options.push(option);
 
 				var cname = option.getAttribute('cname');
 				var id = option.getAttribute('value');
@@ -281,20 +522,63 @@
 				sub_cats.push({cname:cname,id:id});
 
 			}
+		}
 
-		  }
 		var courses = $("#courses").val();
+
+		<? if($branch_data->branch_name != ""){ ?>
+			var branch = "<? echo $branch_data->branch_name ?>";
+		<? }else{ ?>	
+			var branch = $("#branches").val();
+		<? } ?>	
+
 		$.ajax({
 			type : "post",
-			data : {sub_cats:sub_cats,weightages:<? echo ($branch_data->weightage != "") ? $branch_data->weightage : "[]" ?>,cid:courses},
+			data : {sub_cats:sub_cats,weightages:<? echo ($branch_data->weightage != "") ? $branch_data->weightage : "[]" ?>,cid:courses,branch:branch},
+			dataType: "json",
 			url : "<? echo base_url('ajax/getWeightages') ?>",
 			success : function(data){
-				
+//				console.log(data);
 				var course = $('#courses option:selected').attr('coname');
-				var branch_name = $("#branch_name").val();
+				var branch_name = $("#branches").val();
 				
-				$(".courseweightageLabel").html("("+course+' - '+branch_name+")");
-				$(".subcategories_weightages").html(data);
+				$(".courseweightageLabel").html("("+course+' - '+data.branch+")");
+				$(".subcategories_weightages").html(data.html);
+
+				var onloadWeightages = [['Weightage', 'In %']];
+
+				var options1 = [],
+					option1;
+				var tax1 = document.getElementById('sub_cats');
+				var len1 = tax1.options.length;
+
+				for (var i1 = 0; i1 < len1; i1++) {
+					option1 = tax1.options[i1];
+					if (option1.selected) {
+							options1.push(option1);
+
+						var cname1 = option1.getAttribute('cname');
+						if(i1 > 0)
+							var weightage = $('input[name="weightage[]"]:eq('+(i1-1)+')').val();	
+						onloadWeightages.push([cname1, parseInt(weightage) > 0 ? parseInt(weightage) : 0]);
+
+					}
+				}
+
+				google.charts.load('current', {'packages':['corechart']});
+				google.charts.setOnLoadCallback(drawChart);
+
+				function drawChart() {
+					var data = google.visualization.arrayToDataTable(onloadWeightages);
+
+					var options = {
+						legend: 'none',
+						title: 'Weightage Graph'
+					};
+
+					var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+					chart.draw(data, options);
+				}
 			},
 			error : function(data){
 				console.log(data);
@@ -320,6 +604,40 @@
 			url: "<? echo base_url('ajax/getCreditweightage') ?>",
 			success: function(data){
 				$(".assignCredits-"+sid).html(data);
+
+				var options = [],
+					option;
+				var sub_cats = [['Weightage', 'In %']];
+				var tax = document.getElementById('sub_cats');
+				var len = tax.options.length;
+
+				// var id = 1;
+				for (var i = 0; i < len; i++) {
+					option = tax.options[i];
+					if(i > 0)
+						var weightage = $('input[name="weightage[]"]:eq('+(i-1)+')').val();	
+					if (option.selected) {
+							options.push(option);
+						var cname = option.getAttribute('cname');
+						sub_cats.push([cname, parseInt(weightage) > 0 ? parseInt(weightage) : 0]);
+					}
+				}
+
+				google.charts.load('current', {'packages':['corechart']});
+				google.charts.setOnLoadCallback(drawChart);
+
+				function drawChart() {
+					var data = google.visualization.arrayToDataTable(sub_cats);
+
+					var options = {
+						legend: 'none',
+						title: 'Weightage Graph'
+					};
+
+					var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+					chart.draw(data, options);
+				}
+
 			}
 		})
 		

@@ -64,6 +64,12 @@
                 </a>
               </li>
               <li class="nav-item">
+                <a href="<? echo base_url('admin/settings/branches') ?>" class="nav-link <? echo ($suri == "branches") ? 'active' : '' ?>">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Branches</p>
+                </a>
+              </li>
+              <li class="nav-item">
                 <a href="<? echo base_url('admin/settings/Subcategories') ?>" class="nav-link <? echo ($suri == "Subcategories") ? 'active' : '' ?>">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Subject Categories</p>
@@ -93,23 +99,31 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="<? echo base_url('admin/links/subcategoryLinks') ?>" class="nav-link <? echo ($suri == "subcategoryLinks" || $suri == "cusubcategoryLink") ? 'active' : '' ?>">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Subject To Sub Category</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="<? echo base_url('admin/links/courseLinks') ?>" class="nav-link <? echo ($suri == "courseLinks" || $suri == "cucourseLink") ? 'active' : '' ?>">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Sub Category To Course</p>
-                </a>
-              </li>
-              <li class="nav-item">
                 <a href="<? echo base_url('admin/links/programLinks') ?>" class="nav-link <? echo ($suri == "programLinks" || $suri == "cuprogramLink") ? 'active' : '' ?>">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Program To Course</p>
                 </a>
               </li>
+              <li class="nav-item">
+                <a href="<? echo base_url('admin/links/branchLinks') ?>" class="nav-link <? echo ($suri == "branchLinks" || $suri == "cubranchLink") ? 'active' : '' ?>">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Course To Branch</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="<? echo base_url('admin/links/courseLinks') ?>" class="nav-link <? echo ($suri == "courseLinks" || $suri == "cucourseLink") ? 'active' : '' ?>">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Sub Category To Branch</p>
+                </a>
+              </li>
+
+              <li class="nav-item">
+                <a href="<? echo base_url('admin/links/subcategoryLinks') ?>" class="nav-link <? echo ($suri == "subcategoryLinks" || $suri == "cusubcategoryLink") ? 'active' : '' ?>">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Subject To Sub Category</p>
+                </a>
+              </li>
+              
 			</ul> 
 		  </li>	 
        	  <li class="nav-item">

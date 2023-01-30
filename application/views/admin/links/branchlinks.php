@@ -8,12 +8,12 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0">Subject Category To Branch Links</h1>
+            <h1 class="m-0">Course To Branch Links</h1>
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="<? echo base_url("admin/dashboard") ?>">Home</a></li>
-              <li class="breadcrumb-item active">Subject Category To Branch Links</li>
+              <li class="breadcrumb-item active">Course To Branch Links</li>
             </ol>
           </div><!-- /.col -->
         </div><!-- /.row -->
@@ -31,8 +31,8 @@
         
         		<div class="card card-primary card-outline">
 				  <div class="card-header">
-					<h3 class="card-title">All Subject Category To Branch Links</h3>
-					<a href="<? echo base_url('admin/links/cucourseLink') ?>" class="btn bg-gradient-primary pull-right btn-sm" style="float: right;">Create</a>
+					<h3 class="card-title">All Course To Branch Links</h3>
+					<a href="<? echo base_url('admin/links/cubranchLink') ?>" class="btn bg-gradient-primary pull-right btn-sm" style="float: right;">Create</a>
 				  </div>
 				  <!-- /.card-header -->
 				  <div class="card-body">
@@ -40,8 +40,8 @@
 					  <thead>
 						  <tr>
 						  	<th>Sl.No</th>
-							<th>Branch Name</th>
-							<th>Subject Categories</th>
+							<th>Course Name</th>
+							<th>Branches</th>
 							<th>Action</th>
 						  </tr>
 					  </thead>
@@ -52,10 +52,10 @@
 						  ?>
 							  <tr>
 							  	<td><? echo $i ?></td>
-								<td><? echo $d["branch_name"] ?></td>
-								<td><? echo $d["subject_categories"] ?></td>
+								<td><? echo $d["course_name"] ?></td>
+								<td><? echo $d["branches"] ?></td>
 								<td>
-									<a href="<? echo base_url('admin/links/cucourseLink/').$d["id"] ?>"><i class="fa fa-marker"></i></a>&nbsp;&nbsp;
+									<a href="<? echo base_url('admin/links/cubranchLink/').$d["id"] ?>"><i class="fa fa-marker"></i></a>&nbsp;&nbsp;
 									<a href="javascript:void(0)" onClick="deleteRecord(<? echo $d["id"] ?>)"><i class="fa fa-trash" style="color: red"></i></a>
 								</td>
 							  </tr>
@@ -96,7 +96,7 @@
 					type : "post",
 					data : {course:id,ref:'delete'},
 					dataType: "json",
-					url : "<? echo base_url('apis/Links/subcategory_course_link') ?>",
+					url : "<? echo base_url('apis/Links/course_branch_link') ?>",
 					success : function(data){
 
 						if(data.status == 200){
@@ -123,7 +123,7 @@
 				})
 			  
 		  } else {
-			swal("Course Link is safe!");
+			swal("Branch Link is safe!");
 		  }
 		});
 	}

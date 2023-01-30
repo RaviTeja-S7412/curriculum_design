@@ -38,6 +38,58 @@ class Dashboard extends CI_Controller {
 		$this->load->view('view',$data);
 		
 	}
+
+	public function viewsemester(){
+		
+		
+		$institution_id = $this->session->userdata('institute_id');
+		
+		$this->db->select("*");
+		$this->db->join("tbl_institute_branches","tbl_institute_branches.id=tbl_institute_curriculum_design.branch_id");
+		$this->db->join("tbl_courses","tbl_courses.id=tbl_institute_curriculum_design.course");
+		$data["branch_data"] = $this->db->get_where("tbl_institute_curriculum_design",["branch_id"=>$this->input->get("bid")])->row();
+
+		$semesters = [];
+
+		foreach(json_decode($data["branch_data"]->credits) as $k => $s){
+
+			$subjects = json_decode($data["branch_data"]->subjects, true)[$k];
+
+			foreach($s->semesters as $sk => $sem){
+
+				$sem_name = $this->db->get_where("tbl_semesters",["id"=>$sem])->row()->semester_name; 
+				$subject_category_name = $this->db->get_where("tbl_subject_category",["id"=>$k])->row()->category_name; 
+				$sub_data = $this->db->get_where("tbl_subjects",["id"=>$subjects[$sk]])->row(); 
+				
+				$semesters[] = ["subject_category"=>$subject_category_name,"subject_name"=>$sub_data->subject_name,
+				"ideal_credits"=>$sub_data->ideal_credits,"lecture_hours_per_week"=>$s->lecture_hours_per_week[$sk], "tutorial_hours_per_week"=>$s->tutorial_hours_per_week[$sk], "lab_hours_per_week"=>$s->lab_hours_per_week[$sk], "total_credits"=>$s->total_credits[$sk], "semester_name"=>$sem_name];
+			}
+
+		}
+
+		$sids = array();
+		foreach ($semesters as $sm) {
+			$sids[] = (string) $sm['semester_name'];
+		}
+		$uniqueSids = array_unique($sids);
+
+		$totalCredits = 0;
+		
+		foreach(json_decode($data["branch_data"]->credits) as $sc => $tc){
+			
+			$totalCredits += array_sum($tc->total_credits);
+			
+		}
+		
+		$data["totalCredits"] = $totalCredits;
+		$data["unique_sems"] = $uniqueSids;
+		$data["semesters"] = $semesters;
+		$data["program"] = $this->db->get_where("tbl_programs",["id"=>$data["branch_data"]->program])->row();
+		$data["course"] = $this->db->get_where("tbl_courses",["id"=>$data["branch_data"]->course])->row();
+		
+		$this->load->view('viewSemester',$data);
+		
+	}
 	
 	public function addSubjects(){
 		
@@ -59,6 +111,8 @@ class Dashboard extends CI_Controller {
 	}
 	
 	public function viewDesign(){
+
+		$institution_id = $this->session->userdata('institute_id');
 		
 		$this->db->select("*");
 		$this->db->join("tbl_institute_branches","tbl_institute_branches.id=tbl_institute_curriculum_design.branch_id");
@@ -69,12 +123,19 @@ class Dashboard extends CI_Controller {
 		$data["semesters"] = $this->db->get_where("tbl_semesters",["status"=>1])->result();
 		
 		$weightage = json_decode($data["branch_data"]->weightage);
+
+		$icChk = $this->db->get_where("tbl_institution_course_credits",["course_id"=>$data["branch_data"]->course, "institution_id"=>$institution_id]);
+
+		$min_credits = $data["branch_data"]->min_credits;
+		$max_credits = $data["branch_data"]->max_credits;
+		if($icChk->num_rows() > 0){
+			$icdata = $icChk->row();
+			$min_credits = $icdata->min_credits;
+			$max_credits = $icdata->max_credits;
+		}
 		
 		$weigtages = [];
 		foreach($weightage as $k => $w){
-			
-			$min_credits = $data["branch_data"]->min_credits; 
-			$max_credits = $data["branch_data"]->max_credits;
 			
 			$wdata = [];
 			$wdata["max_weightage"] = round(($min_credits/100)*$w);
@@ -106,6 +167,8 @@ class Dashboard extends CI_Controller {
 	}
 	
 	public function addCredits(){
+
+		$institution_id = $this->session->userdata('institute_id');
 		
 		$this->db->select("*");
 		$this->db->join("tbl_institute_branches","tbl_institute_branches.id=tbl_institute_curriculum_design.branch_id");
@@ -114,14 +177,21 @@ class Dashboard extends CI_Controller {
 		
 		$data["sub_categories"] = json_decode($data["branch_data"]->subject_categories);
 		$data["semesters"] = $this->db->get_where("tbl_semesters",["status"=>1])->result();
+
+		$icChk = $this->db->get_where("tbl_institution_course_credits",["course_id"=>$data["branch_data"]->course, "institution_id"=>$institution_id]);
+
+		$min_credits = $data["branch_data"]->min_credits;
+		$max_credits = $data["branch_data"]->max_credits;
+		if($icChk->num_rows() > 0){
+			$icdata = $icChk->row();
+			$min_credits = $icdata->min_credits;
+			$max_credits = $icdata->max_credits;
+		}
 		
 		$weightage = json_decode($data["branch_data"]->weightage);
 		
 		$weigtages = [];
 		foreach($weightage as $k => $w){
-			
-			$min_credits = $data["branch_data"]->min_credits; 
-			$max_credits = $data["branch_data"]->max_credits;
 			
 			$wdata = [];
 			$wdata["max_weightage"] = round(($min_credits/100)*$w);
@@ -261,8 +331,9 @@ class Dashboard extends CI_Controller {
 		
 		if($d){
 			
+			$branch_name = $this->db->get_where("tbl_branches",["id"=>$bd->branch_name])->row()->branch_name;
 			$this->db->where("id",$bid)->update("tbl_institute_branches",["status"=>1]);
-			echo json_encode(["status"=>true,"msg"=>"Credits Added Successfully, Curriculum Design Successfully Created For $bd->branch_name."]);
+			echo json_encode(["status"=>true,"msg"=>"Credits Added Successfully, Curriculum Design Successfully Created For $branch_name."]);
 			
 			$this->session->unset_userdata("branch_data");
 			exit();
@@ -390,7 +461,7 @@ class Dashboard extends CI_Controller {
 				if($bid){
 					echo json_encode(["status"=>true,"msg"=>"Updated Successfully.","bid"=>$bid]);
 				}else{
-					echo json_encode(["status"=>true,"msg"=>"Branch Created Successfully Please Add Subjects.","bid"=>$lid]);
+					echo json_encode(["status"=>true,"msg"=>"Course Created Successfully Please Add Subjects.","bid"=>$lid]);
 				}
 			
 			}else{

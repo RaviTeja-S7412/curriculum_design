@@ -75,9 +75,14 @@ $query_builder = TRUE;
 
 $db['default'] = array(
 	'dsn'	=> '',
-	'hostname' => '10.172.10.202:3306',
-	'username' => 'cfw_db_user',
-	'password' => 'Qgh912&x',
+	// 'hostname' => '10.172.10.202:3306',
+	// 'username' => 'cfw_db_user',
+	// 'password' => 'Qgh912&x',
+	// 'database' => 'cfw_iae',
+
+	'hostname' => 'localhost',
+	'username' => 'root',
+	'password' => '',
 	'database' => 'cfw_iae',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',

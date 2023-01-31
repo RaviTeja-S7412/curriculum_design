@@ -1,4 +1,7 @@
-<? $this->load->view("front_common/header") ?>
+<? 
+	$this->load->view("front_common/header"); 
+	$branch_id = $this->input->get("bid");
+?>
 
 <style>
 
@@ -17,6 +20,7 @@
        <!-- <form method="post" id="addSubjects" action="#<? //echo base_url("dashboard/insertSubjects") ?>"> -->
         <form method="post" id="addSubjects">
 			<div class="col-lg-12 card-col">
+				<a href="<? echo base_url('create-design') ?><? echo $branch_id ? "?bid=$branch_id" : '' ?>"><i class="fa fa-arrow-left backFields pull-left" style="cursor: pointer; font-size:22px"></i></a>
 
 				<? if(count($sub_categories) > 0){ 
 					foreach($sub_categories as $key => $sc){
@@ -49,7 +53,8 @@
 						</select>
 					<div class="row" style="margin-top:10px; margin-bottom:10px">
 						<div class="col-md-12">
-							<input type="button" class="btn btn-info pull-left new_subjects" course_category="<? echo $sc ?>" value="Add New Subjects">
+							<!-- <input type="button" class="btn btn-info pull-left new_subjects" course_category="<? //echo $sc ?>" value="Add New Subjects"> -->
+							<small style="color: red;">Didn’t find the Subject what you are looking for? <a href="javascript:void(0)" class="new_subjects" course_category="<? echo $sc ?>">Click here</a> to add New Subject</small>
 						</div>
 					</div>
 					<div class="row">

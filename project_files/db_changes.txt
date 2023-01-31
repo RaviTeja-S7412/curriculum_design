@@ -1,0 +1,1 @@
+1. tbl_institutes -> changed lecture_credits, tutorial_credits, lab_credits from int to varchar

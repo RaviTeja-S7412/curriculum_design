@@ -27,7 +27,7 @@ class Ajax extends CI_Controller {
 			$html .= '<option value="'.$d->id.'" '.$sel.'>'.$d->branch_name.'</option>';
 			
 		}
-		$html .= '<option value="new">Add New Branch</option>';
+		// $html .= '<option value="new">Add New Branch</option>';
 		
 		echo $html;
 		
@@ -48,16 +48,18 @@ class Ajax extends CI_Controller {
 
 			$icChk = $this->db->get_where("tbl_institution_course_credits",["course_id"=>$d->id, "institution_id"=>$institution_id]);
 
+			$umin = "";	
+			$umax = "";	
 			$min = $d->min_credits;
 			$max = $d->max_credits;
 			if($icChk->num_rows() > 0){
 				$icdata = $icChk->row();
-				$min = $icdata->min_credits;
-				$max = $icdata->max_credits;
+				$umin = $icdata->min_credits;
+				$umax = $icdata->max_credits;
 			}
 
 			$sel = ($cid == $d->id) ? 'selected' : '';	
-			$html .= '<option value="'.$d->id.'" cmin="'.$min.'" cmax="'.$max.'" coname="'.$d->course_short_code.'" '.$sel.'>'.$d->course_name.'</option>';
+			$html .= '<option value="'.$d->id.'" cmin="'.$min.'" cmax="'.$max.'" ucmin="'.$umin.'" ucmax="'.$umax.'" coname="'.$d->course_short_code.'" '.$sel.'>'.$d->course_name.'</option>';
 			
 		}
 		

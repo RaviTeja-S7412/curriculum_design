@@ -10,7 +10,7 @@
 	}
 
 	.bootstrap-duallistbox-container select{
-		height: 180px !important;
+		height: 360px !important;
 	}
 
 </style>
@@ -38,7 +38,7 @@
 					</div>
 					<div class="col-lg-9 cnote" style="margin-top: 20px; display: none">
 						<p style="font-size: 12px; color: red; font-weight: 500">Note: Typical credits are: Minimum – <span id="cmin"></span>, Maximum – <span id="cmax"></span><br>
-						<!-- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Institution credits are: Minimum – <span id="cmin"></span>, Maximum – <span id="cmax"></span> -->
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span id="inst_credits">Institution credits are: Minimum – <span id="ucmin"></span>, Maximum – <span id="ucmax"></span></span>
 						</p></div>
 					<div class="col-lg-3 cnote" style="margin-top: 20px; display: none"><a class="btn btn-primary btn-sm pull-right" href="#" data-toggle="modal" data-target="#creditsModal">Define Your Own Credits</a></div>
 					<div class="col-lg-12">
@@ -47,7 +47,8 @@
 							<select class="custom-select" name="branch_name" id="branches" required>
 								<option value="">Branch</option>
 							</select>
-						</div>	
+							<small style="color: red;">Didn’t find the Branch what you are looking for? <a href="javascript:void(0)" data-toggle="modal" data-target="#branchModal">Click here</a> to add New Branch</small>	
+						</div>
 					</div>
 					
 					<div class="col-lg-12">
@@ -61,7 +62,7 @@
 						</div>
 					</div>
 					<div class="col-md-12">
-						<input type="button" class="btn btn-info pull-left new_course_category" data-toggle="modal" data-target="#myModal" value="Add New Course Catergories" style="display:none">
+						<small style="color: red; display:none;" class="new_course_category">Didn’t find the Course Catergory what you are looking for? <a href="javascript:void(0)" data-toggle="modal" data-target="#myModal">Click here</a> to add Course Catergory</small>
 						<input type="button" class="btn btn-primary pull-right" id="gotoWeightage" value="Submit">
 					</div>
 					
@@ -212,6 +213,10 @@
 		e.preventDefault();
 		var course = $("#courses").val();
 		var branch = $("#new_branch_name").val();
+		if(course === ""){
+			alert("Please Select Course.");
+			return false;	
+		}
 
 		$.ajax({
 			type: "post",
@@ -410,15 +415,28 @@
 		getBranches();
 		var min = $('option:selected', this).attr('cmin');
 		var max = $('option:selected', this).attr('cmax');
+		var umin = $('option:selected', this).attr('ucmin');
+		var umax = $('option:selected', this).attr('ucmax');
 
 		if($(this).val() == ""){
 			$(".cnote").hide();
 			$("#cmin").html("");
 			$("#cmax").html("");
+			$("#ucmin").html("");
+			$("#ucmax").html("");
 		}else{
 			$(".cnote").show();
 			$("#cmin").html(min);
 			$("#cmax").html(max);
+			$("#ucmin").html(umin);
+			$("#ucmax").html(umax);
+			$("#min_credits").val(umin);
+			$("#max_credits").val(umax);
+			if(umin === ""){
+				$("#inst_credits").hide();
+			}else{
+				$("#inst_credits").show();
+			}
 		}
 		
 		$('#sub_cats').bootstrapDualListbox('refresh', true);
@@ -436,9 +454,9 @@
 
 		if(id == "new"){
 			$("#new_branch_name").val("");
-			$("#branchModal").modal('show');
+			// $("#branchModal").modal('show');
 		}else{
-			$("#branchModal").modal('hide');
+			// $("#branchModal").modal('hide');
 		}
 		
 	}) 

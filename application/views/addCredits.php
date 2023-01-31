@@ -1,6 +1,7 @@
 <? 
 	$this->load->view("front_common/header"); 
 	$ref = $this->input->get("ref");
+	$branch_id = $this->input->get("bid");
 	$institution_id = $this->session->userdata('institute_id');
 	$iData = $this->db->get_where("tbl_institutes",["id"=>$institution_id])->row();
 	
@@ -31,7 +32,9 @@
 			 <a href="<? echo base_url('view-curriculum-designs') ?>">
 				<i class="fa fa-arrow-left fa-2x backFields pull-right" data-toggle="tooltip" title="Back To Designs" style="cursor: pointer"></i>
 			 </a>
-         <? } ?>
+         <? }else{ ?>
+			<a href="<? echo base_url('create-design/add-subjects') ?><? echo $branch_id ? "?bid=$branch_id" : '' ?>"><i class="fa fa-arrow-left backFields pull-left" style="cursor: pointer; font-size:22px"></i></a>
+		 <? } ?>
          
           <div class="col-lg-6 ml-auto d-flex">
             <p class="mb-0 text-dark p-1 text-left">
@@ -137,15 +140,15 @@
 				<form method="post" id="updateHRCredits">
 					<div class="form-group">
 						<label>Lecture Hours Credits Per Hr</label>
-						<input type="number" class="form-control" name="lecture_credits" id="lecture_credits" value="<? echo $iData->lecture_credits ?>" placeholder="Lecture Hours Credits Per Hr" required>
+						<input type="number" step="0.01" class="form-control" name="lecture_credits" id="lecture_credits" value="<? echo $iData->lecture_credits ?>" placeholder="Lecture Hours Credits Per Hr" required>
 					</div>
 					<div class="form-group">
 						<label>Tutorial Hours Credits Per Hr</label>
-						<input type="number" class="form-control" name="tutorial_credits" id="tutorial_credits" value="<? echo $iData->tutorial_credits ?>" placeholder="Tutorial Hours Credits Per Hr" required>
+						<input type="number" step="0.01" class="form-control" name="tutorial_credits" id="tutorial_credits" value="<? echo $iData->tutorial_credits ?>" placeholder="Tutorial Hours Credits Per Hr" required>
 					</div>
 					<div class="form-group">
 						<label>Practicals/ Lab Hours Credits Per Hr</label>
-						<input type="number" class="form-control" name="lab_credits" id="lab_credits" value="<? echo $iData->lab_credits ?>" placeholder="Practicals/ Lab Hours Credits Per Hr" required>
+						<input type="number" step="0.01" class="form-control" name="lab_credits" id="lab_credits" value="<? echo $iData->lab_credits ?>" placeholder="Practicals/ Lab Hours Credits Per Hr" required>
 					</div>
 					<div class="form-group">
 						<input type="submit" class="btn btn-primary pull-left" value="Submit">
@@ -245,6 +248,18 @@
 				total_credits.push($(this).val());   
 			}    
 		});
+
+		var g20 = total_credits.filter(v => +v > 20).map(Number)
+
+		if(g20.length > 0){
+			swal(
+				'',
+				'Total value of Credits are not more than 20 for each semister.',
+				'error'
+			);
+			return false;
+		}
+
 		if(total_credits.length == 0){
 			swal(
 			  '',
@@ -371,7 +386,7 @@
 		<? } ?>		
 		
 		var total = lc+tc+lac;
-		
+
 		$(".getCredittotal-"+ref).val(total);
 		
 		var subcatValues = $("input[name='total_credits-"+subid+"[]']")
@@ -386,6 +401,15 @@
 		var max_weightage = $("#max_weightage-"+subid).val();
 		var min_weightage = $("#min_weightage-"+subid).val();
 		var category = $("#category_name-"+subid).val();
+
+		if(parseFloat(total) > 20){
+			swal(
+			  '',
+			  'Total value of Credits are not more than 20 for each semister for '+category,
+			  'error'
+			);
+			return false;
+		}
 		
 		if(subcatTotal > max_weightage && min_weightage < subcatTotal){
 			swal(

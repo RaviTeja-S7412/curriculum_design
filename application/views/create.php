@@ -556,7 +556,6 @@
 			dataType: "json",
 			url : "<? echo base_url('ajax/getWeightages') ?>",
 			success : function(data){
-//				console.log(data);
 				var course = $('#courses option:selected').attr('coname');
 				var branch_name = $("#branches").val();
 				

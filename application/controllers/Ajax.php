@@ -131,7 +131,7 @@ class Ajax extends CI_Controller {
 		$tmin = [];
 		$totalWeigh = 0;
 		
-		$html .= '<div class="form-group row"><label class="col-sm-5" style="text-align:center;"><strong>Subject/Course Category</strong></label> <div class="col-sm-3"><label><strong>Weightage in %</strong></label></div><div class="col-sm-4"><strong>Credits as per given Weightage</strong></div></div>';
+		$html .= '<div class="form-group row"><label class="col-sm-5" style="text-align:center;"><strong>Subject/Course Category</strong></label> <div class="col-sm-3"><label><strong>Credits</strong></label></div><div class="col-sm-4"><strong>Weightage in %</strong></div></div>';
 		
 		foreach($sub_cats as $key => $sc){
 		
@@ -144,7 +144,7 @@ class Ajax extends CI_Controller {
 			if($max)
 				$credits = "<b>Credits:</b> ($max - $min)";
 			
-			$html .= '<div class="form-group row"><label for="staticEmail" class="col-sm-5 col-form-label">'.$sc['cname'].'</label> <div class="col-sm-3"> <input type="text" class="form-control getWeightages" subid="'.$sc['id'].'" name="weightage[]"  placeholder="Weightage in %" value="'.$wt.'" required/><input type="hidden" class="form-control" name="sub_cats[]" value="'.$sc['id'].'"/> </div><div class="col-sm-4 assignCredits-'.$sc['id'].'">'.$credits.'</div></div>';
+			$html .= '<div class="form-group row"><label for="staticEmail" class="col-sm-5 col-form-label">'.$sc['cname'].'</label> <div class="col-sm-3"> <input type="text" class="form-control getWeightages" subid="'.$sc['id'].'" name="weightage[]"  placeholder="Credits" value="'.$wt.'" required/><input type="hidden" class="form-control" name="sub_cats[]" value="'.$sc['id'].'"/> </div><div class="col-sm-4 assignCredits-'.$sc['id'].'">'.$credits.'</div></div>';
 			
 			$tmax[] = $max;
 			$tmin[] = $min;

@@ -49,12 +49,13 @@
           </div>
           <form method="post" id="addCredits">
         <? foreach($sub_categories as $key => $sc){
+			
 				$weigh = json_decode($branch_data->weightage)->$sc;
 				$scat = $this->db->select("category_name")->get_where("tbl_subject_category",["id"=>$sc,"status"=>1])->row();
-				$uWeightage = round($weigh/array_sum(json_decode($branch_data->weightage, true))*100);
 				$w = $weigtages[$sc];
 		?>
-			  <h6><strong><? echo $scat->category_name ?> (Weightage: <? echo $uWeightage." %" ?>) (Credits: <? echo $weigh ?>, Added: <b class="weightage_added-<? echo $sc ?>"><? echo $scatcredits[$sc] ?></b>)</strong></h6>
+          
+			  <h6><strong><? echo $scat->category_name ?> (Weightage: <? echo $weigh." %" ?>) (Credits: <? echo $w["max_weightage"]." - ".$w["min_weightage"] ?>, Added: <b class="weightage_added-<? echo $sc ?>"><? echo $scatcredits[$sc] ?></b>)</strong></h6>
 			  <table class="table text-center table-bordered" style="font-size: 14px">
 				<thead class="thead-dark">
 				  <tr>
@@ -69,7 +70,6 @@
 				</thead>
 				<tbody>
 			  
-			  	<input type="hidden" name="credit_weightage-<? echo $sc ?>" id="credit_weightage-<? echo $sc ?>" value="<? echo $weigh ?>">
 			  	<input type="hidden" name="max_weightage-<? echo $sc ?>" id="max_weightage-<? echo $sc ?>" value="<? echo $w["max_weightage"] ?>">
 			  	<input type="hidden" name="min_weightage-<? echo $sc ?>" id="min_weightage-<? echo $sc ?>" value="<? echo $w["min_weightage"] ?>">
 			  	<input type="hidden" name="category_name-<? echo $sc ?>" id="category_name-<? echo $sc ?>" value="<? echo $scat->category_name ?>">
@@ -370,19 +370,19 @@
 		<? if($iData->lecture_credits == 0){ ?>
 			var lc = (lectureCredits != "") ? parseFloat(lectureCredits) : 0;
 		<? }else{ ?>
-			var lc = (lectureCredits != "") ? parseFloat(lectureCredits*<? echo $iData->lecture_credits ?>) : 0;
+			var lc = (lectureCredits != "") ? parseFloat(lectureCredits/<? echo $iData->lecture_credits ?>) : 0;
 		<? } ?>	
 
 		<? if($iData->tutorial_credits == 0){ ?>
 			var tc = (tutorialCredits != "") ? parseFloat(tutorialCredits) : 0;
 		<? }else{ ?>
-			var tc = (tutorialCredits != "") ? parseFloat(tutorialCredits*<? echo $iData->tutorial_credits ?>) : 0;
+			var tc = (tutorialCredits != "") ? parseFloat(tutorialCredits/<? echo $iData->tutorial_credits ?>) : 0;
 		<? } ?>	
 		
 		<? if($iData->lab_credits == 0){ ?>
 			var lac = (labCredits != "") ? parseFloat(2/labCredits) : 0;
 		<? }else{ ?>
-			var lac = (labCredits != "") ? parseFloat(labCredits*<? echo $iData->lab_credits ?>) : 0;
+			var lac = (labCredits != "") ? parseFloat(<? echo $iData->lab_credits ?>/labCredits) : 0;
 		<? } ?>		
 		
 		var total = lc+tc+lac;
@@ -398,7 +398,6 @@
 		$.each(subcatValues,function(){subcatTotal+=parseFloat(this) || 0;});
 		
 		
-		var credit_weightage = $("#credit_weightage-"+subid).val();
 		var max_weightage = $("#max_weightage-"+subid).val();
 		var min_weightage = $("#min_weightage-"+subid).val();
 		var category = $("#category_name-"+subid).val();
@@ -409,13 +408,13 @@
 			  'Total value of Credits are not more than 20 for each semister for '+category,
 			  'error'
 			);
-			// return false;
+			return false;
 		}
 		
-		if(subcatTotal > credit_weightage){
+		if(subcatTotal > max_weightage && min_weightage < subcatTotal){
 			swal(
 			  '',
-			  'Total value of Credits are not equal to given credits please modify credits for '+category,
+			  'Total value of Credits are more than given weightage please modify credits for '+category,
 			  'error'
 			);
 			
@@ -428,19 +427,19 @@
 			<? if($iData->lecture_credits == 0){ ?>
 				var lc1 = (lectureCredits1 != "") ? parseFloat(lectureCredits1) : 0;
 			<? }else{ ?>
-				var lc1 = (lectureCredits1 != "") ? parseFloat(lectureCredits1*<? echo $iData->lecture_credits ?>) : 0;
+				var lc1 = (lectureCredits1 != "") ? parseFloat(lectureCredits1/<? echo $iData->lecture_credits ?>) : 0;
 			<? } ?>	
 
 			<? if($iData->tutorial_credits == 0){ ?>
 				var tc1 = (tutorialCredits1 != "") ? parseFloat(tutorialCredits1) : 0;
 			<? }else{ ?>
-				var tc1 = (tutorialCredits1 != "") ? parseFloat(tutorialCredits1*<? echo $iData->tutorial_credits ?>) : 0;
+				var tc1 = (tutorialCredits1 != "") ? parseFloat(tutorialCredits1/<? echo $iData->tutorial_credits ?>) : 0;
 			<? } ?>	
 			
 			<? if($iData->lab_credits == 0){ ?>
-				var lac1 = (labCredits1 != "") ? parseFloat(labCredits1*2) : 0;
+				var lac1 = (labCredits1 != "") ? parseFloat(labCredits1/2) : 0;
 			<? }else{ ?>
-				var lac1 = (labCredits1 != "") ? parseFloat(labCredits1*<? echo $iData->lab_credits ?>) : 0;
+				var lac1 = (labCredits1 != "") ? parseFloat(labCredits1/<? echo $iData->lab_credits ?>) : 0;
 			<? } ?>
 
 			var total1 = lc1+tc1+lac1;

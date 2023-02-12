@@ -27,7 +27,7 @@ class Dashboard extends CI_Controller {
 			$data["sub_categories"] = json_decode($data["branch_data"]->subject_categories);	
 		}
 		
-		$data["programs"] = $this->db->get_where("tbl_programs",["status"=>1,"deleted"=>0])->result();
+		$data["programs"] = $this->db->order_by("program_name","asc")->get_where("tbl_programs",["status"=>1,"deleted"=>0])->result();
 		$this->load->view('create',$data);
 		
 	}
@@ -234,9 +234,10 @@ class Dashboard extends CI_Controller {
 			  
 				  $weigh = json_decode($data["branch_data"]->weightage)->$sc;
 				  $scat = $this->db->select("category_name")->get_where("tbl_subject_category",["id"=>$sc,"status"=>1])->row();
+				  $uWeightage = round($weigh/array_sum(json_decode($data["branch_data"]->weightage, true))*100);
 				  $w = $weigtages[$sc];
 			
-				  $html .= '<h4 style="font-size: 15px;"><strong>'.$scat->category_name.' (Weightage: '.$weigh." %".') (Credits: '.$w["max_weightage"]." - ".$w["min_weightage"].', Added: <b class="weightage_added-'.$sc.'">'.$scatcredits[$sc].'</b>)</strong></h4>
+				  $html .= '<h4 style="font-size: 15px;"><strong>'.$scat->category_name.' (Weightage: '.$uWeightage." %".') (Credits: '.$weigh.', Added: <b class="weightage_added-'.$sc.'">'.$scatcredits[$sc].'</b>)</strong></h4>
 				<table style="font-size: 14px;">
 				  <thead>
 					<tr style="border:1px solid gray;">
@@ -653,13 +654,31 @@ class Dashboard extends CI_Controller {
 		$weightage = $this->input->post("weightage");
 		$sub_cats = $this->input->post("sub_cats");
 		$bid = $this->input->post("bid");
-		
-		if(round(array_sum($weightage),1) != round(100,1)){
+
+		$cdata = $this->db->get_where("tbl_courses",["id"=>$course])->row();
+
+		$icChk = $this->db->get_where("tbl_institution_course_credits",["course_id"=>$course, "institution_id"=>$inst_id]);
+
+		$min_credits = $cdata->min_credits;
+		$max_credits = $cdata->max_credits;
+		if($icChk->num_rows() > 0){
+			$icdata = $icChk->row();
+			$min_credits = $icdata->min_credits;
+			$max_credits = $icdata->max_credits;
+		}
+
+		if((round(array_sum($weightage),1) < $min_credits) && (round(array_sum($weightage),1) < $min_credits)){
+
+			echo json_encode(["status"=>false,"msg"=>"Credits Should be in between $min_credits & $max_credits."]);
+			exit();
+
+		}
+		/* if(round(array_sum($weightage),1) != round(100,1)){
 			
 			echo json_encode(["status"=>false,"msg"=>"weightage should be equal to 100%."]);
 			exit();
 			
-		}
+		} */
 		
 		$d = $this->session->set_userdata("branch_data",json_encode($_POST));
 		

@@ -57,10 +57,11 @@
 			
 				$weigh = json_decode($branch_data->weightage)->$sc;
 				$scat = $this->db->select("category_name")->get_where("tbl_subject_category",["id"=>$sc,"status"=>1])->row();
+				$uWeightage = round($weigh/array_sum(json_decode($branch_data->weightage, true))*100);
 				$w = $weigtages[$sc];
 		?>
           
-			  <h6><strong><? echo $scat->category_name ?> (Weightage: <? echo $weigh." %" ?>) (Credits: <? echo $w["max_weightage"]." - ".$w["min_weightage"] ?>, Added: <b class="weightage_added-<? echo $sc ?>"><? echo $scatcredits[$sc] ?></b>)</strong></h6>
+			  <h6><strong><? echo $scat->category_name ?> (Weightage: <? echo $uWeightage." %" ?>) (Credits: <? echo $weigh ?>, Added: <b class="weightage_added-<? echo $sc ?>"><? echo $scatcredits[$sc] ?></b>)</strong></h6>
 			  <table id="example" class="table table-striped table-bordered" style="font-size: 14px">
 				<thead>
 				  <tr>

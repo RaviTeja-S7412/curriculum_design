@@ -31,13 +31,14 @@
 						$exOpenelectivedata = json_decode($ubranch_data->open_electives)->$sc;
 						
 				?>
-
-					<h5><? echo $scdata->category_name ?></h5>
+						
+					<h5 style="text-align: center; margin-top: 20px"><? echo $scdata->category_name ?></h5>
+					<hr />
 						<select multiple="multiple" name="subjects-<? echo $sc ?>[]" id="subjects-<? echo $sc ?>" title="duallistbox_demo1[]">
 						<?
 							$this->db->select("tbl_subjects.id,tbl_subjects.subject_name");
 							$this->db->join("tbl_subjects","tbl_sub_subcat_links.subject=tbl_subjects.id");
-							$subjects = $this->db->get_where("tbl_sub_subcat_links",["tbl_sub_subcat_links.subject_category"=>$sc,"tbl_subjects.elective_status"=>"all"])->result();
+							$subjects = $this->db->order_by("tbl_subjects.subject_name","asc")->get_where("tbl_sub_subcat_links",["tbl_sub_subcat_links.subject_category"=>$sc,"tbl_subjects.elective_status"=>"all"])->result();
 									
 							foreach($subjects as $sub){		
 						
@@ -104,7 +105,7 @@
 
 				<? } ?>	
 					<input type="hidden" name="bid" value="<? echo $this->input->get("bid") ?>">
-					<input type="submit" class="btn btn-primary" value="Submit">
+					<input type="submit" class="btn btn-primary pull-right" value="Save & Next">
 				<? } ?>		
 			  <br><br>
 			</div>
